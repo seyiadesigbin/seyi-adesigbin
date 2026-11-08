@@ -8,11 +8,34 @@
   var site = window.SITE;
   var ITEM_W = 290;
   var GAP = 30;
-  var ROTATIONS = [-4, 3, -2, 4, -3, 2, -5, 2.5, -1.5, 3.5, -3.5, 1.5];
+  var REF_W = 1200;        // width the hand-placed positions below were designed for
+  var SCATTER_MIN = 1180;  // narrower than this, fall back to tidy columns so no text is covered
+  var TITLE_POS = { x: 0, y: 10 };
+  // Hand-placed scatter: id -> [x, y, tilt]. x/y are px on a REF_W-wide board;
+  // x is scaled down on narrower windows. Edit a number to nudge a note.
+  var POS = {
+    portrait: [600, 0, 4],
+    words:    [905, 40, -5],
+    sticker:  [935, 255, -8],
+    exp0:     [560, 400, -2],
+    tools:    [60, 470, 3],
+    exp1:     [20, 730, 3],
+    exp2:     [320, 770, -3],
+    exp3:     [610, 710, 2],
+    exp4:     [905, 750, -4],
+    skill0:   [40, 1110, -3],
+    skill1:   [340, 1150, 2],
+    skill2:   [640, 1110, -2],
+    skill3:   [910, 1020, 3],
+    skill4:   [60, 1300, 2],
+    contact:  [640, 1290, -3]
+  };
+  var BOARD_H = 1500;
   var COLORS = ["y", "p", "g", "b", "w"];
   var STACK_QUERY = "(max-width: 700px)";
 
   var board = null;
+  var titleBlock = null;
   var items = [];
   var topZ = 10;
   var lastWidth = 0;
@@ -33,12 +56,13 @@
 
   /* ---------- building items ---------- */
 
-  function register(node, label, rotationIndex) {
+  function register(node, label, id) {
     node.classList.add("item");
     node.tabIndex = 0;
     node.setAttribute("role", "group");
     node.setAttribute("aria-label", label);
-    node.dataset.rot = String(ROTATIONS[rotationIndex % ROTATIONS.length]);
+    node.dataset.id = id;
+    node.dataset.rot = String(POS[id][2]);
     board.appendChild(node);
     items.push(node);
     return node;
@@ -147,31 +171,61 @@
 
   /* ---------- layout ---------- */
 
+  function resetInline(n) { n.style.left = n.style.top = n.style.transform = ""; }
+
   function layout(tidy) {
     if (!board) return;
-    if (stacked()) { board.style.height = ""; items.forEach(function (n) { n.style.left = n.style.top = n.style.transform = ""; }); return; }
+    if (stacked()) {
+      board.classList.remove("scatter");
+      board.style.height = "";
+      items.forEach(resetInline);
+      return;
+    }
     var W = board.clientWidth;
     if (!W) return; // view is hidden; layout again when it is shown
     lastWidth = W;
 
+    var scatter = W >= SCATTER_MIN;
+    board.classList.toggle("scatter", scatter);
+    items.forEach(function (n) { n.classList.toggle("tidy", !!tidy); });
+
+    if (scatter) {
+      var k = Math.min(1, W / REF_W);
+      titleBlock.style.left = TITLE_POS.x + "px";
+      titleBlock.style.top = TITLE_POS.y + "px";
+      var maxBottom = 0;
+      items.forEach(function (n, i) {
+        var p = POS[n.dataset.id];
+        var x = Math.min(p[0] * k, Math.max(0, W - n.offsetWidth));
+        n.style.left = x + "px";
+        n.style.top = p[1] + "px";
+        n.style.transform = "rotate(" + p[2] + "deg)";
+        n.style.zIndex = String(i + 1);
+        maxBottom = Math.max(maxBottom, p[1] + n.offsetHeight);
+      });
+      board.style.height = Math.max(BOARD_H, maxBottom + 60) + "px";
+    } else {
+      masonry(W);
+    }
+    if (tidy) setTimeout(function () { items.forEach(function (n) { n.classList.remove("tidy"); }); }, 600);
+  }
+
+  // Tidy columns for mid-width windows (the title sits above, in normal flow).
+  function masonry(W) {
     var cols = Math.max(1, Math.floor((W + GAP) / (ITEM_W + GAP)));
     var left0 = Math.max(0, (W - (cols * ITEM_W + (cols - 1) * GAP)) / 2);
+    var top0 = titleBlock.offsetHeight + 40;
     var heights = [];
-    for (var c = 0; c < cols; c++) heights.push(0);
-
+    for (var c = 0; c < cols; c++) heights.push(top0);
     items.forEach(function (n, i) {
       var col = heights.indexOf(Math.min.apply(null, heights));
-      var jitterX = ((i * 37) % 21) - 10;
-      var jitterY = ((i * 53) % 17) - 8;
-      n.classList.toggle("tidy", !!tidy);
-      n.style.left = Math.max(0, left0 + col * (ITEM_W + GAP) + jitterX) + "px";
-      n.style.top = Math.max(0, heights[col] + jitterY) + "px";
+      n.style.left = Math.max(0, left0 + col * (ITEM_W + GAP) + (((i * 37) % 21) - 10)) + "px";
+      n.style.top = Math.max(0, heights[col] + (((i * 53) % 17) - 8)) + "px";
       n.style.transform = "rotate(" + n.dataset.rot + "deg)";
       n.style.zIndex = String(i + 1);
       heights[col] += n.offsetHeight + GAP;
     });
     board.style.height = Math.max.apply(null, heights) + 40 + "px";
-    if (tidy) setTimeout(function () { items.forEach(function (n) { n.classList.remove("tidy"); }); }, 600);
   }
 
   /* ---------- moving items ---------- */
@@ -229,40 +283,40 @@
   function mount(root) {
     root.textContent = "";
 
-    var title = el("div", "desk-title");
-    var h1 = el("h1");
-    h1.appendChild(document.createTextNode("Hey,"));
-    h1.appendChild(document.createElement("br"));
-    h1.appendChild(document.createTextNode("I'm "));
-    h1.appendChild(el("span", null, site.shortName + "."));
-    title.appendChild(h1);
-    title.appendChild(el("p", null, site.tagline + " " + site.intro + " This is my desk. Pick things up, move them around, read what's on them."));
-    root.appendChild(title);
-
+    // Small fixed controls, like the mockup: Tidy up top-left, hint along the bottom.
     var tools = el("div", "desk-tools");
     var tidyBtn = el("button", null, "Tidy up");
     tidyBtn.type = "button";
     tidyBtn.addEventListener("click", function () { layout(true); });
     tools.appendChild(tidyBtn);
-    tools.appendChild(el("span", null, "Drag anything. Keyboard: focus a note, then use the arrow keys."));
     root.appendChild(tools);
+    root.appendChild(el("p", "desk-hint", "Drag anything. Keyboard: focus a note, then use the arrow keys."));
 
     board = el("div", "desk-board");
     root.appendChild(board);
 
-    var r = 0;
-    register(polaroid(), "Portrait of " + site.shortName, r++);
-    register(wordsNote(), "Three words that describe me", r++);
+    titleBlock = el("div", "desk-title");
+    var h1 = el("h1");
+    h1.appendChild(document.createTextNode("Hey,"));
+    h1.appendChild(document.createElement("br"));
+    h1.appendChild(document.createTextNode("I'm "));
+    h1.appendChild(el("span", null, site.shortName + "."));
+    titleBlock.appendChild(h1);
+    titleBlock.appendChild(el("p", null, site.tagline + " " + site.intro + " This is my desk. Pick things up, move them around, read what's on them."));
+    board.appendChild(titleBlock);
+
+    register(polaroid(), "Portrait of " + site.shortName, "portrait");
+    register(wordsNote(), "Three words that describe me", "words");
     site.experience.forEach(function (x, i) {
-      register(experienceNote(x, COLORS[(i + 1) % COLORS.length]), x.role + " at " + x.org + ", " + years(x), r++);
+      register(experienceNote(x, COLORS[(i + 1) % COLORS.length]), x.role + " at " + x.org + ", " + years(x), "exp" + i);
     });
     var accents = ["#111", "#ff4d2e", "#2b59ff"];
     site.expertise.forEach(function (x, i) {
-      register(expertiseTicket(x, accents[i % accents.length]), "Skill: " + x.title, r++);
+      register(expertiseTicket(x, accents[i % accents.length]), "Skill: " + x.title, "skill" + i);
     });
-    register(toolsNote(), "Tools I work with", r++);
-    register(contactNote(), "Contact details", r++);
-    if (site.sticker) register(sticker(), site.sticker, r++);
+    register(toolsNote(), "Tools I work with", "tools");
+    register(contactNote(), "Contact details", "contact");
+    if (site.sticker) register(sticker(), site.sticker, "sticker");
 
     items.forEach(makeMovable);
 
