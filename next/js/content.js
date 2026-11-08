@@ -15,6 +15,10 @@ window.SITE = {
   // Text on the round sticker on the Desk. Set to null to remove the sticker.
   sticker: "Open to work",
 
+  // Report view copy. The headline's middle line is shown in the accent colour.
+  reportHeadline: ["Seyi", "turns data", "into sense."],
+  heroTags: ["Analyst", "Designer"],
+
   threeWords: ["Excellence", "Integrity", "Creativity"],
 
   contact: {

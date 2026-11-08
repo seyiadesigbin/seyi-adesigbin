@@ -37,27 +37,6 @@
     return n;
   }
 
-  // Temporary content for the Report until its designed version lands.
-  function renderReportPlaceholder(root) {
-    root.appendChild(el("h1", site.name));
-    root.appendChild(el("p", site.tagline + " " + site.intro));
-    root.appendChild(el("h2", "Key figures"));
-    var s = el("ul");
-    site.stats.forEach(function (x) {
-      s.appendChild(el("li", x.value.toLocaleString() + (x.plus ? "+" : "") + (x.suffix || "") + " " + x.label));
-    });
-    root.appendChild(s);
-    root.appendChild(el("h2", "Experience"));
-    var e = el("ul");
-    site.experience.forEach(function (x) {
-      var years = x.start === x.end ? x.start : x.start + "-" + x.end;
-      e.appendChild(el("li", years + " | " + x.role + ", " + x.org));
-    });
-    root.appendChild(e);
-    root.appendChild(el("h2", "Tools"));
-    root.appendChild(el("p", site.tools.map(function (t) { return t.name; }).join(", ")));
-  }
-
   function show(view, opts) {
     opts = opts || {};
     VIEWS.forEach(function (v) {
@@ -74,7 +53,7 @@
 
   function init() {
     window.Desk.mount(document.querySelector("#view-desk .desk"));
-    renderReportPlaceholder(document.querySelector("#view-report .placeholder"));
+    window.Report.mount(document.querySelector("#view-report .report"));
 
     var stored = readStored();
     var start = viewFromHash() || (VIEWS.indexOf(stored) !== -1 ? stored : null) || defaultView();
