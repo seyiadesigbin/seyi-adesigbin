@@ -1,0 +1,41 @@
+/* Reset, page shell, and the Desk | Report switch. View styling comes in later changes. */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+body {
+  font: 17px/1.55 var(--font-body);
+  min-height: 100vh;
+}
+
+body[data-view="desk"] { background: var(--desk-bg); color: #fff; }
+body[data-view="report"] { background: var(--report-bg); color: var(--report-ink); }
+
+a { color: inherit; }
+[hidden] { display: none !important; }
+
+.skip-link {
+  position: absolute; left: -999px; top: 8px;
+  background: #fff; color: #000; padding: var(--space-2) var(--space-3); z-index: 100;
+}
+.skip-link:focus { left: 8px; }
+
+.wrap { max-width: var(--max-width); margin: 0 auto; padding: var(--space-5) var(--space-4); }
+
+/* View switch */
+.view-switch {
+  position: fixed; top: var(--space-3); right: var(--space-3); z-index: 50;
+  display: inline-flex; border: 2px solid currentColor; border-radius: 999px;
+  background: var(--paper); color: #111; overflow: hidden;
+  font: 700 12px var(--font-mono); letter-spacing: .1em; text-transform: uppercase;
+}
+.view-switch button {
+  all: unset; cursor: pointer; padding: 8px 16px;
+}
+.view-switch button[aria-pressed="true"] { background: #111; color: var(--note-yellow); }
+.view-switch button:focus-visible { outline: 3px solid var(--report-blue); outline-offset: -3px; }
+
+/* Placeholder content blocks, replaced by the real views in later changes */
+.placeholder h1 { font-size: clamp(40px, 8vw, 96px); line-height: .95; letter-spacing: -.04em; margin-bottom: var(--space-3); }
+.placeholder h2 { margin: var(--space-5) 0 var(--space-3); }
+.placeholder ul { padding-left: 1.2em; }
+.placeholder li { margin-bottom: var(--space-2); }

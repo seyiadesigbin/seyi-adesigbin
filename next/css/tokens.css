@@ -1,0 +1,31 @@
+/* Design tokens: the one place colours, type and spacing are decided. */
+:root {
+  /* Desk palette */
+  --desk-bg: #1b1b1f;
+  --note-yellow: #ffd84d;
+  --note-pink: #ff8fb1;
+  --note-green: #7ce0a3;
+  --note-blue: #8ec5ff;
+  --paper: #fffdf6;
+
+  /* Report palette */
+  --report-bg: #f3eee3;
+  --report-ink: #14213d;
+  --report-accent: #ff4d2e;
+  --report-blue: #2b59ff;
+
+  /* Type: system fonts for now. Final fonts are chosen in a later change. */
+  --font-body: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --font-mono: "Courier New", ui-monospace, monospace;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+
+  --radius: 4px;
+  --max-width: 1100px;
+}
