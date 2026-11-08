@@ -37,18 +37,7 @@
     return n;
   }
 
-  // Temporary content so both views show real data. Replaced by the designed views later.
-  function renderDeskPlaceholder(root) {
-    root.appendChild(el("h1", "Hey, I'm " + site.shortName + "."));
-    root.appendChild(el("p", site.tagline + " " + site.intro));
-    root.appendChild(el("h2", "Three words"));
-    root.appendChild(el("p", site.threeWords.join(". ") + "."));
-    root.appendChild(el("h2", "What I do"));
-    var ul = el("ul");
-    site.expertise.forEach(function (x) { ul.appendChild(el("li", x.title + ": " + x.text)); });
-    root.appendChild(ul);
-  }
-
+  // Temporary content for the Report until its designed version lands.
   function renderReportPlaceholder(root) {
     root.appendChild(el("h1", site.name));
     root.appendChild(el("p", site.tagline + " " + site.intro));
@@ -75,6 +64,7 @@
       document.getElementById("view-" + v).hidden = v !== view;
     });
     document.body.setAttribute("data-view", view);
+    if (view === "desk" && window.Desk) window.Desk.layout(); // needs the view visible to measure
     document.querySelectorAll(".view-switch button").forEach(function (b) {
       b.setAttribute("aria-pressed", String(b.dataset.view === view));
     });
@@ -83,7 +73,7 @@
   }
 
   function init() {
-    renderDeskPlaceholder(document.querySelector("#view-desk .placeholder"));
+    window.Desk.mount(document.querySelector("#view-desk .desk"));
     renderReportPlaceholder(document.querySelector("#view-report .placeholder"));
 
     var stored = readStored();
