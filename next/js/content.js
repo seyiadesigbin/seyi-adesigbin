@@ -12,6 +12,9 @@ window.SITE = {
   tagline: "Data analyst and designer.",
   intro:
     "I take messy numbers from health systems and turn them into pages people actually read.",
+  // Text on the round sticker on the Desk. Set to null to remove the sticker.
+  sticker: "Open to work",
+
   threeWords: ["Excellence", "Integrity", "Creativity"],
 
   contact: {
