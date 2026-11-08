@@ -16,8 +16,12 @@ window.SITE = {
 
   contact: {
     email: "oluwaseyiadesigbin@gmail.com",
-    // The old site showed two different phone numbers. Left out until you confirm which one to publish.
-    phone: null,
+    // "e164" is the dialling form used in tel:/wa.me links (digits after +, no spaces); "display" is what visitors read.
+    // The UK number was given as +44 07344 060334; the trunk "0" is dropped in international format.
+    phones: [
+      { label: "Call and WhatsApp", display: "+44 7344 060334", e164: "+447344060334", call: true, whatsapp: true },
+      { label: "WhatsApp only", display: "+234 908 710 9453", e164: "+2349087109453", call: false, whatsapp: true }
+    ],
     // Not linked on the old site either (href was empty). Add a path like "assets/resume.pdf" when ready.
     resume: null,
     linkedin: "https://www.linkedin.com/in/seyiadesigbin/",
