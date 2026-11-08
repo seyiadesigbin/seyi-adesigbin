@@ -1,0 +1,27 @@
+/* Contact form, shared by the Desk note and the Report section. */
+.contact-form { margin-top: var(--space-3); display: grid; gap: var(--space-2); }
+.cf-field { display: grid; gap: 3px; }
+.cf-field label { font: 700 11px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+  font: 15px var(--font-body); color: #111; background: #fff;
+  border: 2px solid #111; border-radius: 0; padding: 9px 10px; width: 100%;
+  user-select: text; touch-action: auto;
+}
+.contact-form textarea { resize: vertical; min-height: 90px; }
+.contact-form input:focus-visible,
+.contact-form textarea:focus-visible,
+.cf-button:focus-visible { outline: 3px solid var(--report-blue); outline-offset: 2px; }
+.cf-button {
+  justify-self: start; cursor: pointer; border: 0; padding: 11px 18px;
+  font: 800 14px var(--font-body); background: #111; color: var(--note-yellow);
+}
+.cf-button:disabled { opacity: .6; cursor: wait; }
+.cf-status { font-size: 14px; min-height: 1.4em; }
+.cf-status a { font-weight: 700; }
+
+/* Report: give the form a boxed look under the contact list */
+.report .contact-form { max-width: 640px; margin-top: var(--space-4); padding: 20px; border: 2px solid var(--report-ink); background: rgba(255, 255, 255, .5); }
+.report .contact-form .cf-button { background: var(--report-ink); color: var(--report-bg); }
+.report .contact-form .cf-button:hover { background: var(--report-accent); }

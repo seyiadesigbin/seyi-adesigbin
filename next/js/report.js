@@ -179,34 +179,35 @@
     var s = section("contact", "Appendix / Contact", "Have a report that needs a human?");
     var ul = el("ul", "contact-list");
 
-    var li = el("li");
-    li.appendChild(el("span", "mono", "Email"));
-    li.appendChild(link("mailto:" + c.email, c.email));
-    ul.appendChild(li);
+    // One row = a small label plus a value; the value groups its text and links so the grid keeps two columns.
+    function row(label) {
+      var li = el("li");
+      li.appendChild(el("span", "mono", label));
+      var value = el("span", "contact-value");
+      li.appendChild(value);
+      ul.appendChild(li);
+      return value;
+    }
+
+    row("Email").appendChild(link("mailto:" + c.email, c.email));
 
     (c.phones || []).forEach(function (ph) {
-      var row = el("li");
-      row.appendChild(el("span", "mono", ph.label));
-      row.appendChild(document.createTextNode(ph.display + " "));
-      if (ph.call) { row.appendChild(link("tel:" + ph.e164, "Call")); row.appendChild(document.createTextNode(" ")); }
-      if (ph.whatsapp) row.appendChild(link("https://wa.me/" + ph.e164.replace("+", ""), "WhatsApp", true));
-      ul.appendChild(row);
+      var v = row(ph.label);
+      v.appendChild(document.createTextNode(ph.display + " "));
+      if (ph.call) { v.appendChild(link("tel:" + ph.e164, "Call")); v.appendChild(document.createTextNode(" ")); }
+      if (ph.whatsapp) v.appendChild(link("https://wa.me/" + ph.e164.replace("+", ""), "WhatsApp", true));
     });
 
-    var soc = el("li");
-    soc.appendChild(el("span", "mono", "Elsewhere"));
+    var soc = row("Elsewhere");
     soc.appendChild(link(c.linkedin, "LinkedIn", true));
     soc.appendChild(document.createTextNode(" / "));
     soc.appendChild(link(c.instagram, "Instagram", true));
-    ul.appendChild(soc);
 
-    if (c.resume) {
-      var r = el("li");
-      r.appendChild(el("span", "mono", "Resume"));
-      r.appendChild(link(c.resume, "Download my resume"));
-      ul.appendChild(r);
-    }
+    if (c.resume) row("Resume").appendChild(link(c.resume, "Download my resume"));
+
     s.appendChild(ul);
+    var form = window.ContactForm && window.ContactForm.create(site);
+    if (form) s.appendChild(form);
     return s;
   }
 

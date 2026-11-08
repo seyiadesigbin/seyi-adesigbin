@@ -161,6 +161,8 @@
       ul.appendChild(r);
     }
     n.appendChild(ul);
+    var form = window.ContactForm && window.ContactForm.create(site);
+    if (form) n.appendChild(form);
     return n;
   }
 

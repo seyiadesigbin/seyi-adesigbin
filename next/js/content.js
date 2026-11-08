@@ -31,6 +31,11 @@ window.SITE = {
     ],
     // Not linked on the old site either (href was empty). Add a path like "assets/resume.pdf" when ready.
     resume: null,
+    // Web3Forms access key (web3forms.com). It is meant to be public. While it is null, the contact form is
+    // simply not shown and only the links appear.
+    formKey: null,
+    formSubject: "New message from your website",
+
     linkedin: "https://www.linkedin.com/in/seyiadesigbin/",
     instagram: "https://www.instagram.com/seyiadesigbin/"
   },
