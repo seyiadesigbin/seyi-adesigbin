@@ -56,6 +56,7 @@ next/
     report.css          Report view
     form.css            contact form (used by both views)
     icons.css           icon-only contact links (used by both views)
+    avatar-popup.css    one-time avatar pop-up
   js/
     content.js          all the text and data
     app.js              chooses the view, keeps the address and switch in sync
@@ -63,6 +64,7 @@ next/
     report.js           builds the Report
     icons.js            small SVG icons for Call / WhatsApp / LinkedIn / Instagram links
     contact-form.js     contact form
+    avatar-popup.js     one-time avatar pop-up (shown once, remembered in localStorage)
 ```
 
 Moving a Desk note: positions are hand-placed in the `POS` table at the top of `next/js/desk.js` (x, y and tilt for each
