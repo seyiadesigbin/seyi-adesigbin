@@ -1,0 +1,34 @@
+/* The standing avatar figure (see js/avatar-figure.js). Recolour the outfit with the variables below. */
+.avatar-figure {
+  --fig-skin: #ca8251;
+  --fig-neck: #a3623a;
+  --fig-top: #2a2a31;
+  --fig-trousers: #1f1f25;
+  --fig-shoe: #fffdf6;
+  --fig-sole: #22222a;
+  --fig-line: #0d0d10;
+  --fig-accent: var(--report-accent, #ff4d2e);
+  --fig-halo: none;               /* set to a light drop-shadow for use on a dark background */
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: var(--fig-halo);
+}
+.avatar-figure .fig-skin { fill: var(--fig-skin); }
+.avatar-figure .fig-neck { fill: var(--fig-neck); }
+.avatar-figure .fig-top { fill: var(--fig-top); }
+.avatar-figure .fig-trousers { fill: var(--fig-trousers); }
+.avatar-figure .fig-shoe { fill: var(--fig-shoe); }
+.avatar-figure .fig-sole { fill: var(--fig-sole); }
+.avatar-figure .fig-accent { fill: var(--fig-accent); }
+.avatar-figure .fig-line { stroke: var(--fig-line); stroke-width: 3; stroke-linejoin: round; }
+.avatar-figure .fig-line-thin { stroke: var(--fig-line); stroke-width: 1.5; }
+.avatar-figure .fig-fold,
+.avatar-figure .fig-rib { fill: none; stroke: rgba(255, 255, 255, .16); stroke-width: 2; stroke-linecap: round; }
+.avatar-figure .fig-rib { stroke: rgba(255, 255, 255, .28); stroke-width: 3; }
+.avatar-figure .fig-string { fill: none; stroke: #b9b9c4; stroke-width: 2; stroke-linecap: round; }
+.avatar-figure .fig-button { fill: rgba(255, 255, 255, .5); }
+
+/* Limbs hang from their top centre, so rotating a part swings it from the shoulder or hip. */
+.avatar-figure .fig-part { transform-box: fill-box; transform-origin: 50% 0%; }
