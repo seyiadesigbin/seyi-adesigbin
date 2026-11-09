@@ -14,9 +14,11 @@
   --report-accent: #ff4d2e;
   --report-blue: #2b59ff;
 
-  /* Type: system fonts for now. Final fonts are chosen in a later change. */
-  --font-body: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
-  --font-mono: "Courier New", ui-monospace, monospace;
+  /* Type: self-hosted fonts (see fonts.css), system fonts as fallback. */
+  --font-body: "Inter", "Inter Fallback", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --font-head: "Bitter", "Bitter Fallback", Georgia, serif;
+  --font-mono: "JetBrains Mono", "Courier New", ui-monospace, monospace;
+  --font-hand: "Caveat", "Segoe Script", "Comic Sans MS", cursive;
 
   /* Spacing scale */
   --space-1: 4px;

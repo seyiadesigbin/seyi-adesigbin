@@ -10,8 +10,8 @@ body[data-view="desk"] {
 .desk-title { color: #fff; max-width: 560px; position: relative; padding-top: 10px; }
 .desk-board.scatter .desk-title { position: absolute; z-index: 0; }
 .desk-title h1 {
-  font: 900 clamp(56px, 9vw, 120px)/.88 var(--font-body);
-  letter-spacing: -.05em;
+  font: 700 clamp(56px, 9vw, 120px)/.88 var(--font-head);
+  letter-spacing: -.03em;
 }
 .desk-title h1 span { color: var(--note-yellow); }
 .desk-title p { margin-top: var(--space-3); color: #cfcfcf; font-size: 19px; max-width: 440px; }
@@ -46,7 +46,7 @@ body[data-view="desk"] {
   display: block; margin-bottom: 6px;
   font: 11px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; opacity: .7;
 }
-.note h3 { font: 900 22px/1.1 var(--font-body); margin-bottom: 8px; }
+.note h3 { font: 700 22px/1.1 var(--font-head); margin-bottom: 8px; }
 .note p { font-size: 15px; line-height: 1.45; }
 .note p + p { margin-top: 8px; }
 .note ul { list-style: none; padding: 0; }
@@ -65,12 +65,12 @@ body[data-view="desk"] {
 .polaroid img { width: 100%; height: auto; aspect-ratio: 1; display: block; background: #e8e4da; }
 .polaroid .caption {
   position: absolute; bottom: 12px; left: 0; right: 0; text-align: center;
-  font: italic 22px "Segoe Script", "Comic Sans MS", cursive;
+  font: 700 26px var(--font-hand);
 }
 
 .ticket { background: var(--paper); border-left: 14px dotted #111; padding: 16px 18px; }
 .ticket small { display: block; font: 11px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; opacity: .6; }
-.ticket b { display: block; font: 900 26px/1.1 var(--font-body); margin: 4px 0 6px; }
+.ticket b { display: block; font: 700 26px/1.1 var(--font-head); margin: 4px 0 6px; }
 .ticket p { font-size: 14px; line-height: 1.4; }
 
 .sticker {
