@@ -9,10 +9,10 @@ no framework, no build step, no libraries.
 
 | Part | Where | State |
 |---|---|---|
-| New site | `next/` | Built: Desk view, Report view, contact form |
+| New site | `next/` | Built: Desk view, Report view, contact form, icon contact links |
 | Old template site | repo root (`index.html`, `css/`, `js/`, `fonts/`, `img/`) | Still the live site. Will be deleted in the final "swap" change |
 
-Still to come: icons for the contact links, an animated avatar pop-up, real fonts, a resume download, share-preview
+Still to come: an animated avatar pop-up, real fonts, a resume download, share-preview
 tags, and the swap (move `next/` to the root, add the `CNAME` file, connect the domain).
 
 ## The two views
@@ -55,11 +55,13 @@ next/
     desk.css            Desk view
     report.css          Report view
     form.css            contact form (used by both views)
+    icons.css           icon-only contact links (used by both views)
   js/
     content.js          all the text and data
     app.js              chooses the view, keeps the address and switch in sync
     desk.js             builds and animates the Desk
     report.js           builds the Report
+    icons.js            small SVG icons for Call / WhatsApp / LinkedIn / Instagram links
     contact-form.js     contact form
 ```
 

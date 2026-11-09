@@ -55,8 +55,7 @@ See `README.md` for the file map. Key points:
 
 ## Roadmap
 
-Next: icons instead of the words Call / WhatsApp (and likely LinkedIn / Instagram) with accessible labels. Then the
-avatar pop-up (the owner has an Illustrator `.ai` face drawing; try `pdftocairo -svg` on a copy, else ask for an SVG
+Next: the avatar pop-up (the owner has an Illustrator `.ai` face drawing; try `pdftocairo -svg` on a copy, else ask for an SVG
 export with the head on its own layer; never alter the original), an optional animated career timeline (avatar runs
 through the roles and becomes a plane at the move to the UK; needs the year), real fonts, resume PDF, share-preview
 tags and sitemap, and finally the swap change.

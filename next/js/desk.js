@@ -144,15 +144,18 @@
     (c.phones || []).forEach(function (ph) {
       var row = el("li");
       row.appendChild(document.createTextNode(ph.label + ": " + ph.display + " "));
-      if (ph.call) { row.appendChild(link("tel:" + ph.e164, "Call")); row.appendChild(document.createTextNode(" ")); }
-      if (ph.whatsapp) row.appendChild(link("https://wa.me/" + ph.e164.replace("+", ""), "WhatsApp", true));
+      var icons = el("span", "icon-links");
+      if (ph.call) icons.appendChild(window.Icons.link("call", "tel:" + ph.e164, "Call " + ph.display));
+      if (ph.whatsapp) icons.appendChild(window.Icons.link("whatsapp", "https://wa.me/" + ph.e164.replace("+", ""), "WhatsApp " + ph.display, true));
+      row.appendChild(icons);
       ul.appendChild(row);
     });
 
     var social = el("li");
-    social.appendChild(link(c.linkedin, "LinkedIn", true));
-    social.appendChild(document.createTextNode(" / "));
-    social.appendChild(link(c.instagram, "Instagram", true));
+    var icons = el("span", "icon-links");
+    icons.appendChild(window.Icons.link("linkedin", c.linkedin, "LinkedIn", true));
+    icons.appendChild(window.Icons.link("instagram", c.instagram, "Instagram", true));
+    social.appendChild(icons);
     ul.appendChild(social);
 
     if (c.resume) {

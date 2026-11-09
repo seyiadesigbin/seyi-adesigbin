@@ -1,0 +1,18 @@
+/* Icon-only contact links (Desk and Report). Colour follows the surrounding text. */
+.icon-links { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px; vertical-align: middle; }
+a.icon-link {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  color: inherit; transition: background .15s, transform .15s;
+}
+a.icon-link svg {
+  width: 22px; height: 22px; fill: none; stroke: currentColor;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+a.icon-link:hover { background: rgba(0, 0, 0, .1); transform: translateY(-1px); }
+a.icon-link:focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  a.icon-link { transition: none; }
+  a.icon-link:hover { transform: none; }
+}
