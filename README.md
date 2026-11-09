@@ -12,8 +12,7 @@ no framework, no build step, no libraries.
 | New site | `next/` | Built: Desk view, Report view, contact form, icon contact links |
 | Old template site | repo root (`index.html`, `css/`, `js/`, `fonts/`, `img/`) | Still the live site. Will be deleted in the final "swap" change |
 
-Still to come: an animated avatar pop-up, real fonts, a resume download, share-preview
-tags, and the swap (move `next/` to the root, add the `CNAME` file, connect the domain).
+Still to come: real fonts, a resume download, and the swap (move `next/` to the root, add the `CNAME` file, connect the domain).
 
 ## The two views
 
@@ -48,7 +47,9 @@ Examples:
 ```
 next/
   index.html            page shell with both views and the switch
-  assets/               images
+  assets/               images (og-image.png is the share-preview card, 1200x630, made from avatar.png)
+  robots.txt            allows crawlers, points to the sitemap
+  sitemap.xml           the one page
   css/
     tokens.css          colours, fonts, spacing (the one place to restyle)
     base.css            reset, page shell, the Desk | Report switch
