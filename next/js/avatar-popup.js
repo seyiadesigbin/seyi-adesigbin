@@ -90,7 +90,7 @@
     figure.setAttribute("aria-hidden", "true");
     var headFrame = el("div", null, "avatar-popup__head");
     var img = document.createElement("img");
-    img.src = "assets/avatar.png"; img.alt = ""; img.width = 1000; img.height = 1000;
+    img.src = "assets/avatar.png"; img.alt = ""; img.width = 375; img.height = 556;
     headFrame.appendChild(img);
     var handWrap = el("div", null, "avatar-popup__handwrap");
     handWrap.appendChild(buildHand());

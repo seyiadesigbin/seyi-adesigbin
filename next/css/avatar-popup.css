@@ -14,12 +14,13 @@
 /* Figure: clipped at the bottom edge of the window so it looks like it is peeking up. */
 .avatar-popup__figure { position: relative; flex: none; width: 170px; height: 156px; overflow: hidden; }
 
-/* Head crop: the source image is 1000px square with the head around x 290-710, y 70-650. */
+/* Head: the source image is trimmed to the drawing (375 x 556), so it fills the frame with no crop offsets.
+   If the image is replaced, set the aspect ratio to the new size and the width to taste. */
 .avatar-popup__head {
-  position: absolute; left: 0; bottom: 0; width: 110px; aspect-ratio: 420 / 580; overflow: hidden;
+  position: absolute; left: 6px; bottom: 0; width: 98px; aspect-ratio: 375 / 556; overflow: hidden;
   transform: translateY(105%); transition: transform .5s cubic-bezier(.2, 1.4, .4, 1);
 }
-.avatar-popup__head img { display: block; width: 238%; max-width: none; height: auto; margin: -16.7% 0 0 -69%; }
+.avatar-popup__head img { display: block; width: 100%; height: auto; }
 .avatar-popup.is-up .avatar-popup__head { transform: none; }
 
 /* Hand: pivots at the wrist, which stays below the window edge. */
