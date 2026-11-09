@@ -115,7 +115,7 @@
 
   function expertiseTicket(x, accent) {
     var n = el("div", "ticket");
-    n.style.borderLeftColor = accent;
+    n.style.setProperty("--stub", accent);
     n.appendChild(el("small", null, "Admit one / skill"));
     n.appendChild(el("b", null, x.title));
     n.appendChild(el("p", null, x.text));
@@ -315,7 +315,7 @@
     site.experience.forEach(function (x, i) {
       register(experienceNote(x, COLORS[(i + 1) % COLORS.length]), x.role + " at " + x.org + ", " + years(x), "exp" + i);
     });
-    var accents = ["#111", "#ff4d2e", "#2b59ff"];
+    var accents = ["#1f9d6b", "#ff4d2e", "#2b59ff"];
     site.expertise.forEach(function (x, i) {
       register(expertiseTicket(x, accents[i % accents.length]), "Skill: " + x.title, "skill" + i);
     });

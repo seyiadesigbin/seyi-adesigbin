@@ -68,7 +68,19 @@ body[data-view="desk"] {
   font: 700 26px var(--font-hand);
 }
 
-.ticket { background: var(--paper); border-left: 14px dotted #111; padding: 16px 18px; }
+/* Ticket: a coloured stub with punched holes (transparent, so the desk shows through),
+   a dashed tear line, then the paper. Stub colour comes from --stub (set in desk.js). */
+.ticket {
+  --stub: #111;
+  padding: 16px 18px 16px 38px;
+  background-image:
+    radial-gradient(circle at 10px 9px, transparent 3.5px, var(--stub) 4px),
+    linear-gradient(to bottom, rgba(0, 0, 0, .35) 50%, transparent 50%),
+    linear-gradient(var(--paper), var(--paper));
+  background-repeat: repeat-y, repeat-y, no-repeat;
+  background-size: 20px 18px, 1px 6px, calc(100% - 20px) 100%;
+  background-position: 0 0, 20px 0, 20px 0;
+}
 .ticket small { display: block; font: 11px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; opacity: .6; }
 .ticket b { display: block; font: 700 26px/1.1 var(--font-head); margin: 4px 0 6px; }
 .ticket p { font-size: 14px; line-height: 1.4; }
