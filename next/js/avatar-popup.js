@@ -58,7 +58,7 @@
    * opts.site     window.SITE
    * opts.getView  function returning "desk" or "report"
    * opts.onSwitch function(view) called when the visitor accepts the suggestion
-   * Returns { hide } or null when there is nothing to show.
+   * Returns { hide, refresh } or null when there is nothing to show.
    */
   function create(opts) {
     var copy = opts.site.popup;
@@ -137,7 +137,10 @@
     }
     later(start, START_DELAY_MS);
 
-    return { hide: hide };
+    // Called by the app whenever the view changes, so the text and button always describe the view now showing.
+    function refresh() { if (!box.hidden) fill(); }
+
+    return { hide: hide, refresh: refresh };
   }
 
   window.AvatarPopup = { create: create };

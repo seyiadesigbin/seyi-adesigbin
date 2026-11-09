@@ -11,6 +11,7 @@
   var VIEWS = ["desk", "report"];
   var STORAGE_KEY = "seyi-view";
   var site = window.SITE;
+  var popup = null; // the one-time avatar, if it is still to be shown
 
   function readStored() {
     try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
@@ -47,6 +48,7 @@
     document.querySelectorAll(".view-switch button").forEach(function (b) {
       b.setAttribute("aria-pressed", String(b.dataset.view === view));
     });
+    if (popup) popup.refresh(); // keep the pop-up's text in step with the view
     if (opts.remember) store(view);
     if (opts.updateHash && viewFromHash() !== view) history.replaceState(null, "", "#" + view);
   }
@@ -65,7 +67,7 @@
       });
     });
     if (window.AvatarPopup) {
-      window.AvatarPopup.create({
+      popup = window.AvatarPopup.create({
         site: site,
         getView: function () { return document.body.getAttribute("data-view"); },
         onSwitch: function (v) { show(v, { remember: true, updateHash: true }); }
