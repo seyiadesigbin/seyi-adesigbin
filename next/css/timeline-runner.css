@@ -1,0 +1,48 @@
+/* The strip above the Report timeline (see js/timeline-runner.js). Lines up with the year columns below it. */
+.runner { display: grid; grid-template-columns: var(--label) 1fr; align-items: end; padding-top: 6px; }
+.runner-side { align-self: center; padding-right: 14px; }
+.runner-replay {
+  all: unset; box-sizing: border-box; cursor: pointer; font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  border: 2px solid var(--report-ink); border-radius: 999px; padding: 5px 12px; background: var(--report-bg);
+}
+.runner-replay:hover { background: var(--report-ink); color: var(--report-bg); }
+.runner-replay:focus-visible { outline: 3px solid var(--report-blue); outline-offset: 2px; }
+
+.runner-track { position: relative; height: 168px; }
+.runner-ground { position: absolute; left: 0; right: 0; bottom: 0; height: 0; border-bottom: 3px solid var(--report-ink); }
+
+/* The avatar's feet sit on the line; "left" is the centre of the figure. */
+.runner-actor { position: absolute; bottom: 3px; width: 58px; margin-left: -29px; pointer-events: none; will-change: left, transform; }
+.runner-actor .avatar-figure { width: 58px; }
+.runner-actor .runner-plane { display: none; position: absolute; left: 50%; bottom: 8px; width: 116px; margin-left: -58px; }
+.runner-actor.is-plane .runner-plane { display: block; }
+.runner-actor.is-plane .avatar-figure { display: none; }
+
+/* The move to the UK: a dashed marker with a label, always visible. */
+.runner-pin { position: absolute; top: 0; bottom: 0; width: 0; border-left: 2px dashed var(--report-accent); pointer-events: none; }
+.runner-pin__label {
+  position: absolute; top: 0; left: 8px; white-space: nowrap; font-size: 12px; letter-spacing: .04em;
+  background: var(--report-accent); color: #fff; padding: 3px 8px;
+}
+.runner-plane--pin { position: absolute; top: 28px; left: 8px; width: 44px; }
+.runner-pin--left .runner-pin__label { left: auto; right: 8px; }
+.runner-pin--left .runner-plane--pin { left: auto; right: 8px; }
+
+/* Plane colours */
+.runner-plane .pl-body { fill: var(--paper); }
+.runner-plane .pl-stripe { fill: var(--report-accent); }
+.runner-plane .pl-tail { fill: var(--report-accent); }
+.runner-plane .pl-wing { fill: var(--report-blue); }
+.runner-plane .pl-wing-far { fill: #1d3fb8; }
+.runner-plane .pl-window { fill: var(--report-ink); }
+.runner-plane path, .runner-plane circle { stroke: var(--report-ink); stroke-width: 3; stroke-linejoin: round; }
+.runner-plane .pl-window { stroke-width: 0; }
+
+@media (max-width: 800px) {
+  .runner-track { height: 128px; }
+  .runner-actor, .runner-actor .avatar-figure { width: 42px; }
+  .runner-actor { margin-left: -21px; }
+  .runner-actor .runner-plane { width: 84px; margin-left: -42px; }
+  .runner-pin__label { font-size: 10px; padding: 2px 5px; }
+  .runner-plane--pin { width: 34px; top: 22px; }
+}

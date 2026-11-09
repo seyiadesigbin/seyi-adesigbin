@@ -109,6 +109,8 @@
     var axis = el("div", "axis mono");
     axis.appendChild(el("span"));
     for (var y = first; y <= last; y++) axis.appendChild(el("span", null, String(y)));
+    // The avatar's running strip sits above the years. Skipped if its scripts are not loaded.
+    if (window.TimelineRunner) chart.appendChild(window.TimelineRunner.create(site, first, n));
     chart.appendChild(axis);
 
     site.experience.forEach(function (x, i) {

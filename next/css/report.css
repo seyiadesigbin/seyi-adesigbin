@@ -96,6 +96,7 @@ body[data-view="report"] {
   .r-hero { grid-template-columns: 1fr; }
   .r-tag-1 { left: 0; }
   .gantt { --label: 120px; padding: 12px 10px 4px; }
+  .axis span { padding-left: 3px; font-size: 10px; letter-spacing: -.02em; overflow: hidden; }
   .who b { font-size: 12px; }
   .who small { font-size: 11px; }
   .detail p { padding-left: 0; }
