@@ -7,6 +7,8 @@ body {
   min-height: 100vh;
 }
 
+h1, h2, h3 { font-family: var(--font-head); font-weight: 700; }
+
 body[data-view="desk"] { background: var(--desk-bg); color: #fff; }
 body[data-view="report"] { background: var(--report-bg); color: var(--report-ink); }
 
