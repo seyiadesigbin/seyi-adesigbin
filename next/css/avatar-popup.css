@@ -1,0 +1,34 @@
+/* One-time avatar pop-up. Sits bottom-right, away from the Desk | Report switch (top-right). */
+.avatar-popup {
+  position: fixed; right: var(--space-3); bottom: var(--space-3); z-index: 60;
+  display: flex; gap: var(--space-3); align-items: center;
+  width: min(360px, calc(100vw - 2 * var(--space-3)));
+  padding: var(--space-3) var(--space-5) var(--space-3) var(--space-3);
+  background: var(--paper); color: #111;
+  border: 2px solid #111; border-radius: var(--radius);
+  box-shadow: 4px 4px 0 #111;
+  font: 15px/1.4 var(--font-body);
+  animation: avatar-pop-in .25s ease-out;
+}
+@keyframes avatar-pop-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .avatar-popup { animation: none; } }
+
+/* Crop to the head: the source image is 1000px square with the head around x 290-710, y 70-650. */
+.avatar-popup__face {
+  flex: none; width: 76px; aspect-ratio: 420 / 580; overflow: hidden;
+  border-radius: 38px 38px 8px 8px; background: var(--note-yellow); border: 2px solid #111;
+}
+.avatar-popup__face img { display: block; width: 238%; max-width: none; height: auto; margin: -16.7% 0 0 -69%; }
+
+.avatar-popup__hello { font-weight: 700; }
+.avatar-popup__msg { margin-top: 2px; }
+.avatar-popup__go {
+  all: unset; box-sizing: border-box; cursor: pointer; margin-top: var(--space-2);
+  padding: 6px 12px; background: #111; color: var(--note-yellow); border-radius: 999px;
+  font: 700 12px var(--font-mono); letter-spacing: .08em; text-transform: uppercase;
+}
+.avatar-popup__close {
+  all: unset; box-sizing: border-box; cursor: pointer; position: absolute; top: 4px; right: 6px;
+  width: 28px; height: 28px; text-align: center; font: 22px/28px var(--font-body);
+}
+.avatar-popup__go:focus-visible, .avatar-popup__close:focus-visible { outline: 3px solid var(--report-blue); outline-offset: 2px; }

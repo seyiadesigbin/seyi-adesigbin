@@ -15,6 +15,17 @@ window.SITE = {
   // Text on the round sticker on the Desk. Set to null to remove the sticker.
   sticker: "Open to work",
 
+  // One-time pop-up with the avatar. "desk" / "report" text is chosen by the view the visitor is in; the button
+  // offers the other view. Set popup to null to remove it.
+  popup: {
+    greeting: "Hi, I'm Seyi.",
+    desk: "You're looking at my desk. Prefer a plain report?",
+    report: "This is the report view. Want to see the desk instead?",
+    toReport: "Show the report",
+    toDesk: "Show the desk",
+    close: "Close"
+  },
+
   // Report view copy. The headline's middle line is shown in the accent colour.
   reportHeadline: ["Seyi", "turns data", "into sense."],
   heroTags: ["Analyst", "Designer"],

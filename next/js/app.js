@@ -64,6 +64,13 @@
         show(b.dataset.view, { remember: true, updateHash: true });
       });
     });
+    if (window.AvatarPopup) {
+      window.AvatarPopup.create({
+        site: site,
+        getView: function () { return document.body.getAttribute("data-view"); },
+        onSwitch: function (v) { show(v, { remember: true, updateHash: true }); }
+      });
+    }
     window.addEventListener("hashchange", function () {
       var v = viewFromHash();
       if (v) show(v, { remember: true });
