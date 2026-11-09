@@ -120,6 +120,9 @@ window.SITE = {
     }
   ],
 
+  // Where the avatar on the Report timeline turns into a plane. Calendar month, 1-12.
+  ukMove: { year: 2026, month: 2, label: "Moved to the UK, Feb 2026" },
+
   // Headline numbers, all taken from the experience text above.
   stats: [
     { value: 3400, label: "health facilities analysed across Kaduna and Kano" },
