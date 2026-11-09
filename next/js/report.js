@@ -194,14 +194,17 @@
     (c.phones || []).forEach(function (ph) {
       var v = row(ph.label);
       v.appendChild(document.createTextNode(ph.display + " "));
-      if (ph.call) { v.appendChild(link("tel:" + ph.e164, "Call")); v.appendChild(document.createTextNode(" ")); }
-      if (ph.whatsapp) v.appendChild(link("https://wa.me/" + ph.e164.replace("+", ""), "WhatsApp", true));
+      var icons = el("span", "icon-links");
+      if (ph.call) icons.appendChild(window.Icons.link("call", "tel:" + ph.e164, "Call " + ph.display));
+      if (ph.whatsapp) icons.appendChild(window.Icons.link("whatsapp", "https://wa.me/" + ph.e164.replace("+", ""), "WhatsApp " + ph.display, true));
+      v.appendChild(icons);
     });
 
     var soc = row("Elsewhere");
-    soc.appendChild(link(c.linkedin, "LinkedIn", true));
-    soc.appendChild(document.createTextNode(" / "));
-    soc.appendChild(link(c.instagram, "Instagram", true));
+    var icons = el("span", "icon-links");
+    icons.appendChild(window.Icons.link("linkedin", c.linkedin, "LinkedIn", true));
+    icons.appendChild(window.Icons.link("instagram", c.instagram, "Instagram", true));
+    soc.appendChild(icons);
 
     if (c.resume) row("Resume").appendChild(link(c.resume, "Download my resume"));
 
