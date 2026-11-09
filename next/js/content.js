@@ -77,6 +77,13 @@ window.SITE = {
   // Years are used by the Report timeline. "start"/"end" are calendar years.
   experience: [
     {
+      org: "Heriot-Watt University",
+      role: "MSc Data Science",
+      start: 2026,
+      end: 2027,
+      text: "January 2026 to May 2027 (expected)."
+    },
+    {
       org: "UNICEF Nigeria",
       role: "Infographics Design Analyst",
       start: 2024,
