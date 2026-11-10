@@ -47,7 +47,7 @@ Examples:
 ```
 next/
   index.html            page shell with both views and the switch
-  assets/               images (figure/ holds the six pieces of the running avatar; og-image.png is the share-preview card, 1200x630, made from avatar.png)
+  assets/               images (figure/ holds the six pieces of the avatar, front view, and figure/walk/ the six pieces of the side-view walker; og-image.png is the share-preview card, 1200x630, made from avatar.png)
   robots.txt            allows crawlers, points to the sitemap
   sitemap.xml           the one page
   css/
@@ -59,7 +59,7 @@ next/
     form.css            contact form (used by both views)
     icons.css           icon-only contact links (used by both views)
     avatar-popup.css    one-time avatar pop-up
-    avatar-figure.css   the standing/running avatar figure (head size and run cycle)
+    avatar-figure.css   the avatar figure (front view head size and run cycle, side view walk cycle)
     timeline-runner.css the running strip above the Report timeline
   js/
     content.js          all the text and data

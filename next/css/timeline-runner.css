@@ -12,11 +12,12 @@
 .runner-ground { position: absolute; left: 0; right: 0; bottom: 0; height: 0; border-bottom: 3px solid var(--report-ink); }
 
 /* The avatar's feet sit on the line; "left" is the centre of the figure. */
-.runner-actor { position: absolute; bottom: 3px; width: 58px; margin-left: -29px; pointer-events: none; will-change: left, transform; }
-.runner-actor .avatar-figure { width: 58px; }
+.runner-actor { position: absolute; bottom: 3px; width: 84px; margin-left: -42px; pointer-events: none; will-change: left, transform; }
+.runner-actor .avatar-figure { width: 84px; }
 
 @media (max-width: 800px) {
   .runner-track { height: 128px; }
-  .runner-actor, .runner-actor .avatar-figure { width: 42px; }
-  .runner-actor { margin-left: -21px; }
+  .runner-actor, .runner-actor .avatar-figure { width: 62px; }
+  .runner-actor { margin-left: -31px; }
+  .runner-track { height: 124px; }
 }

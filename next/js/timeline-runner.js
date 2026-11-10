@@ -42,12 +42,12 @@
     var pNow = frac(nowYear, first, n);
 
     var actor = el("div", "runner-actor");
-    var figure = window.AvatarFigure ? window.AvatarFigure.create() : null;
+    var figure = window.AvatarFigure ? window.AvatarFigure.create("walk") : null;
     if (figure) actor.appendChild(figure);
     track.appendChild(actor);
 
-    function stand(left) { actor.style.left = pct(left); if (figure) figure.classList.remove("is-running"); }
-    function setRun(on) { if (figure) figure.classList.toggle("is-running", on); }
+    function stand(left) { actor.style.left = pct(left); if (figure) figure.classList.remove("is-walking"); }
+    function setRun(on) { if (figure) figure.classList.toggle("is-walking", on); }
 
     var running = [];
     var token = 0;
