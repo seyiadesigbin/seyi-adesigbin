@@ -83,6 +83,46 @@
     });
     placeAll();
     ui.count.textContent = String(notes.length);
+    ui.listCount.textContent = String(notes.length);
+    renderList();
+  }
+
+  // ---- notes list ----------------------------------------------------------
+  function renderList() {
+    if (!ui.list) return;
+    ui.list.textContent = "";
+    if (!notes.length) { ui.list.appendChild(el("p", "No notes yet.", "rv-ui rv-empty")); return; }
+    notes.forEach(function (n, i) {
+      var item = el("button", null, "rv-ui rv-item");
+      item.type = "button";
+      item.appendChild(el("strong", (i + 1) + ". " + n.text));
+      item.appendChild(el("small", n.view + " · " + n.element));
+      item.setAttribute("aria-label", "Go to note " + (i + 1) + ": " + n.text);
+      item.addEventListener("click", function () { goTo(n); });
+      ui.list.appendChild(item);
+    });
+  }
+  function goTo(n) {
+    if (document.body.getAttribute("data-view") !== n.view) location.hash = "#" + n.view;
+    setTimeout(function () {
+      var target = find(n.path);
+      if (target && visible(target)) target.scrollIntoView({ block: "center", behavior: "auto" });
+      setTimeout(function () {
+        placeAll();
+        var pin = pins[n.id];
+        if (pin && !pin.hidden) {
+          pin.classList.add("rv-flash");
+          setTimeout(function () { pin.classList.remove("rv-flash"); }, 1500);
+        }
+      }, 150);
+    }, 150);
+  }
+  function resetSiteData() {
+    if (!window.confirm("Reset site data? This clears the saved view choice and the one-time pop-up, so the page behaves like a first visit. Your review notes are kept.")) return;
+    try {
+      Object.keys(localStorage).forEach(function (k) { if (k !== KEY) localStorage.removeItem(k); });
+    } catch (e) { /* ignore */ }
+    location.reload();
   }
 
   // ---- note editor -----------------------------------------------------
@@ -219,6 +259,15 @@
       "box-shadow:0 6px 24px rgba(0,0,0,.45)}" +
       ".rv-editor textarea{width:100%;font:inherit;padding:6px;margin-bottom:8px;resize:vertical}" +
       ".rv-row{display:flex;gap:6px}" +
+      ".rv-list{position:fixed;right:12px;bottom:64px;z-index:100000;width:300px;max-height:50vh;overflow:auto;" +
+      "background:#fff;color:#111;border-radius:10px;padding:6px;box-shadow:0 6px 24px rgba(0,0,0,.45)}" +
+      ".rv-item{display:block;width:100%;text-align:left;border:0;background:none;padding:8px;border-radius:6px;cursor:pointer;font:inherit;color:inherit}" +
+      ".rv-item:hover,.rv-item:focus-visible{background:#ffe9a8}" +
+      ".rv-item small{display:block;color:#555;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}" +
+      ".rv-empty{margin:8px;color:#555}" +
+      ".rv-flash{animation:rv-flash .5s ease-in-out 3}" +
+      "@keyframes rv-flash{50%{transform:scale(1.7)}}" +
+      ".rv-panel{flex-wrap:wrap;max-width:calc(100vw - 24px);justify-content:flex-end}" +
       "body.rv-adding,body.rv-adding *{cursor:crosshair!important}" +
       "body.rv-adding .rv-ui,body.rv-adding .rv-ui *{cursor:auto!important}";
     document.head.appendChild(css);
@@ -237,6 +286,24 @@
     exp.appendChild(ui.count);
     exp.appendChild(document.createTextNode(")"));
     exp.addEventListener("click", doExport);
+    var lst = el("button");
+    lst.type = "button";
+    lst.setAttribute("aria-expanded", "false");
+    lst.appendChild(document.createTextNode("Notes ("));
+    ui.listCount = el("span", String(notes.length));
+    lst.appendChild(ui.listCount);
+    lst.appendChild(document.createTextNode(")"));
+    ui.list = el("div", null, "rv-ui rv-list");
+    ui.list.hidden = true;
+    ui.list.setAttribute("role", "region");
+    ui.list.setAttribute("aria-label", "Review notes list");
+    lst.addEventListener("click", function () {
+      ui.list.hidden = !ui.list.hidden;
+      lst.setAttribute("aria-expanded", String(!ui.list.hidden));
+    });
+    var rst = el("button", "Reset site data");
+    rst.type = "button";
+    rst.addEventListener("click", resetSiteData);
     var clr = el("button", "Clear all");
     clr.type = "button";
     clr.addEventListener("click", function () {
@@ -247,10 +314,13 @@
     ui.status = el("span", "");
     ui.status.setAttribute("aria-live", "polite");
     panel.appendChild(ui.add);
+    panel.appendChild(lst);
     panel.appendChild(exp);
+    panel.appendChild(rst);
     panel.appendChild(clr);
     panel.appendChild(ui.status);
     document.body.appendChild(panel);
+    document.body.appendChild(ui.list);
   }
 
   function init() {
