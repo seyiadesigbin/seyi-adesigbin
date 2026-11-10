@@ -58,7 +58,7 @@ body[data-view="report"] {
 .rowg-btn:focus-visible { outline: 3px solid var(--report-blue); outline-offset: 2px; }
 .who { padding-right: 14px; }
 .who b { display: block; font-size: 14px; line-height: 1.2; }
-.who small { color: #555; font-size: 13px; display: block; }
+.who small { color: #555; font-size: 13px; line-height: 1.25; display: block; }
 .who-meta { display: block; margin-top: 3px; font-size: 12px; color: #333; }
 .who-place { display: flex; align-items: center; gap: 6px; }
 .who-meta .years { display: block; margin-top: 1px; font-size: 11px; color: #666; }
