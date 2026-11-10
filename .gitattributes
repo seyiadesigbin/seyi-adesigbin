@@ -1,0 +1,12 @@
+# Normalise line endings in the repository; check out as the platform default.
+* text=auto
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary
+*.jpeg binary
+*.webp binary
+*.woff2 binary
