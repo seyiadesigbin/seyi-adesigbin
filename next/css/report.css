@@ -58,7 +58,10 @@ body[data-view="report"] {
 .rowg-btn:focus-visible { outline: 3px solid var(--report-blue); outline-offset: 2px; }
 .who { padding-right: 14px; }
 .who b { display: block; font-size: 14px; line-height: 1.2; }
-.who small { color: #555; font-size: 13px; }
+.who small { color: #555; font-size: 13px; display: block; }
+.who-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; margin-top: 4px; font-size: 11px; color: #333; }
+.who-meta .flag { width: 20px; height: 13px; border: 1px solid var(--report-ink); flex: none; }
+.who-meta .kind { border: 1px solid var(--report-ink); border-radius: 999px; padding: 0 6px; text-transform: uppercase; letter-spacing: .06em; font-size: 10px; }
 .track { position: relative; display: block; height: 30px; }
 .bar { position: absolute; top: 0; height: 30px; background: var(--report-blue); transition: background .2s, top .2s, height .2s; }
 .rowg-btn:hover .bar, .rowg.open .bar { background: var(--report-accent); top: -2px; height: 34px; }
@@ -99,6 +102,8 @@ body[data-view="report"] {
   .axis span { padding-left: 3px; font-size: 10px; letter-spacing: -.02em; overflow: hidden; }
   .who b { font-size: 12px; }
   .who small { font-size: 11px; }
+  .who-meta { font-size: 10px; gap: 2px 6px; }
+  .who-meta .flag { width: 16px; height: 11px; }
   .detail p { padding-left: 0; }
   .contact-list li { grid-template-columns: 1fr; gap: 2px; }
 }

@@ -70,7 +70,8 @@ next/
     contact-form.js     contact form
     avatar-popup.js     one-time avatar pop-up (shown once, remembered in localStorage)
     avatar-figure.js    the avatar as six pictures (head, torso, arms, legs) that can move apart
-    timeline-runner.js  the avatar runs along the Report timeline, becomes a plane at the move to the UK
+    timeline-runner.js  the avatar moves along the Report timeline to today
+    flags.js            small SVG country flags (Nigeria, UK) shown next to each role
 ```
 
 Moving a Desk note: positions are hand-placed in the `POS` table at the top of `next/js/desk.js` (x, y and tilt for each

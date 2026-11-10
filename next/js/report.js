@@ -121,9 +121,17 @@
       var detailId = "role-" + i;
       btn.setAttribute("aria-controls", detailId);
 
+      // Job title first, then the organisation, then where it was and when (what a recruiter scans for).
       var who = el("span", "who");
-      who.appendChild(el("b", null, x.org));
-      who.appendChild(el("small", null, x.role));
+      who.appendChild(el("b", null, x.role));
+      who.appendChild(el("small", null, x.org));
+      var meta = el("span", "who-meta mono");
+      var flag = window.Flags && x.country ? window.Flags.create(x.country) : null;
+      if (flag) meta.appendChild(flag);
+      if (x.place) meta.appendChild(el("span", "place", x.place));
+      meta.appendChild(el("span", "years", x.start === x.end ? String(x.start) : x.start + " - " + x.end));
+      if (x.kind) meta.appendChild(el("span", "kind", x.kind));
+      who.appendChild(meta);
       btn.appendChild(who);
 
       var track = el("span", "track");

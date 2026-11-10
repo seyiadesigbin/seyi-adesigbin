@@ -74,11 +74,16 @@ window.SITE = {
     }
   ],
 
-  // Years are used by the Report timeline. "start"/"end" are calendar years.
+  // Years are used by the Report timeline. "country" picks the flag (NG or GB), "place" is the text shown with it.
+  // "kind" is optional: "Study" marks study rather than a job.
+  // Months are not recorded yet; they will come from the career-hub details. "start"/"end" are calendar years.
   experience: [
     {
       org: "Heriot-Watt University",
       role: "MSc Data Science",
+      country: "GB",
+      place: "Scotland, UK",
+      kind: "Study",
       start: 2026,
       end: 2027,
       text: "January 2026 to May 2027 (expected)."
@@ -86,6 +91,8 @@ window.SITE = {
     {
       org: "UNICEF Nigeria",
       role: "Infographics Design Analyst",
+      country: "NG",
+      place: "Nigeria",
       start: 2024,
       end: 2025,
       text: "Design high-quality infographics, reports and brochures that communicate critical insights and updates on initiatives for child protection and well-being in Nigeria."
@@ -93,6 +100,8 @@ window.SITE = {
     {
       org: "ACE Strategy and Consults",
       role: "Data Analyst",
+      country: "NG",
+      place: "Nigeria",
       start: 2023,
       end: 2024,
       text: "Extracted, cleaned and analysed data from 3,400 health facilities across Kaduna and Kano states, and built a model projecting the impact of scaling up the EMOTIVE trial across primary and secondary health care facilities."
@@ -100,6 +109,8 @@ window.SITE = {
     {
       org: "Solina Centre for International Development and Research",
       role: "Digital Health Specialist",
+      country: "NG",
+      place: "Nigeria",
       start: 2023,
       end: 2023,
       text: "Conducted 21 key informant interviews and assessed 25 telehealth platforms in Lagos, uncovering trends, challenges and opportunities, and delivering insights for strategic decisions and programme implementation."
@@ -107,6 +118,8 @@ window.SITE = {
     {
       org: "Solina Centre for International Development and Research",
       role: "Healthcare Data Analyst",
+      country: "NG",
+      place: "Nigeria",
       start: 2019,
       end: 2022,
       text: "Analysed data for 10,000+ ART patients, achieving 95% retention, and supported data assistants with software and hardware issues."
@@ -114,14 +127,13 @@ window.SITE = {
     {
       org: "Solina Centre for International Development and Research",
       role: "IT Support Intern",
+      country: "NG",
+      place: "Nigeria",
       start: 2019,
       end: 2019,
       text: "Delivered technical support and troubleshooting to staff, resolving software-related issues."
     }
   ],
-
-  // Where the avatar on the Report timeline turns into a plane. Calendar month, 1-12.
-  ukMove: { year: 2026, month: 2, label: "Moved to the UK, Feb 2026" },
 
   // Headline numbers, all taken from the experience text above.
   stats: [
