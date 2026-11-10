@@ -114,3 +114,6 @@ body[data-view="report"] {
   .detail p { padding-left: 0; }
   .contact-list li { grid-template-columns: 1fr; gap: 2px; }
 }
+
+/* Jumping to a section (header links or the floating menu) leaves a little space above it instead of sitting flush at the top. */
+#figures, #timeline, #expertise, #toolkit, #contact { scroll-margin-top: 24px; }
