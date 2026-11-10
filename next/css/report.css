@@ -11,13 +11,20 @@ body[data-view="report"] {
 .report .mono { font: 12px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
 .report a:focus-visible, .report button:focus-visible { outline: 3px solid var(--report-blue); outline-offset: 3px; }
 
-/* Header: leaves room on the right for the Desk | Report switch */
+/* Header: leaves room on the right for the Desk | Report switch. It stays at the top while you scroll, so you can
+   jump between sections from anywhere (the switch is above it at z-index 50). */
 .r-top {
+  position: sticky; top: 0; z-index: 40; background: var(--report-bg);
   display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); justify-content: space-between;
   padding: 22px 190px 18px 0; border-bottom: 2px solid var(--report-ink);
 }
+/* When a section is scrolled to, leave room for the sticky header above it. */
+.report section[id] { scroll-margin-top: 76px; }
 .r-top nav a { margin-right: 22px; text-decoration: none; }
 .r-top nav a:hover { color: var(--report-accent); }
+
+/* Contact: links and form side by side, one under the other on narrower screens. */
+@media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
 
 /* Hero */
 .r-hero { display: grid; grid-template-columns: 1.3fr 1fr; gap: 30px; padding: 60px 0 40px; align-items: end; }
@@ -85,7 +92,8 @@ body[data-view="report"] {
 .b-3 { font-size: 30px; padding: 16px 34px; background: var(--report-blue); color: #fff; border-color: var(--report-blue); }
 
 /* Contact */
-.contact-list { list-style: none; padding: 0; max-width: 640px; border: 2px solid var(--report-ink); background: rgba(255, 255, 255, .5); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+.contact-list { list-style: none; padding: 0; margin: 0; border: 2px solid var(--report-ink); background: rgba(255, 255, 255, .5); }
 .contact-list li { display: grid; grid-template-columns: 150px 1fr; gap: 12px; padding: 14px 18px; border-bottom: 2px solid var(--report-ink); align-items: baseline; }
 .contact-list li:last-child { border-bottom: 0; }
 .contact-list a { font-weight: 700; }
@@ -97,7 +105,10 @@ body[data-view="report"] {
 }
 
 @media (max-width: 800px) {
-  .r-top { padding-right: 0; padding-top: 70px; }
+  .r-top { padding-right: 0; padding-top: 58px; padding-bottom: 10px; }   /* clears the fixed switch; stays at the top */
+  .r-top > span { display: none; }
+  .r-top nav { overflow-x: auto; white-space: nowrap; }
+  .report section[id] { scroll-margin-top: 104px; }
   .r-hero { grid-template-columns: 1fr; }
   .r-tag-1 { left: 0; }
   .gantt { --label: 120px; padding: 12px 10px 4px; }

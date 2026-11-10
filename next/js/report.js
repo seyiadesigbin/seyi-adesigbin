@@ -220,9 +220,12 @@
 
     if (c.resume) row("Resume").appendChild(link(c.resume, "Download my resume"));
 
-    s.appendChild(ul);
+    // The links and the form sit side by side on wide screens (see .contact-grid in report.css).
+    var grid = el("div", "contact-grid");
+    grid.appendChild(ul);
     var form = window.ContactForm && window.ContactForm.create(site);
-    if (form) s.appendChild(form);
+    if (form) grid.appendChild(form);
+    s.appendChild(grid);
     return s;
   }
 

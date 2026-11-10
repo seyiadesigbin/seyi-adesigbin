@@ -22,6 +22,6 @@
 .cf-status a { font-weight: 700; }
 
 /* Report: give the form a boxed look under the contact list */
-.report .contact-form { max-width: 640px; margin-top: var(--space-4); padding: 20px; border: 2px solid var(--report-ink); background: rgba(255, 255, 255, .5); }
+.report .contact-form { margin-top: 0; padding: 20px; border: 2px solid var(--report-ink); background: rgba(255, 255, 255, .5); }
 .report .contact-form .cf-button { background: var(--report-ink); color: var(--report-bg); }
 .report .contact-form .cf-button:hover { background: var(--report-accent); }
