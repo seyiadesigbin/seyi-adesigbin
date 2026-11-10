@@ -125,12 +125,14 @@
       var who = el("span", "who");
       who.appendChild(el("b", null, x.role));
       who.appendChild(el("small", null, x.org));
-      var meta = el("span", "who-meta mono");
+      var meta = el("span", "who-meta");
+      var where = el("span", "who-place");
       var flag = window.Flags && x.country ? window.Flags.create(x.country) : null;
-      if (flag) meta.appendChild(flag);
-      if (x.place) meta.appendChild(el("span", "place", x.place));
-      meta.appendChild(el("span", "years", x.start === x.end ? String(x.start) : x.start + " - " + x.end));
-      if (x.kind) meta.appendChild(el("span", "kind", x.kind));
+      if (flag) where.appendChild(flag);
+      if (x.place) where.appendChild(el("span", null, x.place));
+      if (x.kind) where.appendChild(el("span", "kind mono", x.kind));
+      if (where.childNodes.length) meta.appendChild(where);
+      meta.appendChild(el("span", "years mono", x.start === x.end ? String(x.start) : x.start + " - " + x.end));
       who.appendChild(meta);
       btn.appendChild(who);
 
