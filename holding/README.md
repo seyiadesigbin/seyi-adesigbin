@@ -5,7 +5,7 @@ Pages. It shares the Desk's look: a dark board of tilted sticky notes. The notes
 tidy them into dashed outlines (drag, or arrow keys then Enter, or the "Tidy up" button). When all five are placed the
 avatar says thanks.
 
-On arrival a dialog says "Coming soon" and offers to tidy the desk. The desk is drawn in 3D (a tilted plane with solid objects, including a Bible labelled "John 3:16").
+On arrival a dialog says "Coming soon" and offers to tidy the desk. The desk is drawn in 3D (a tilted plane with solid objects, including a Bible, with John 3:16 on a note).
 
 Plain HTML, CSS and JavaScript. No build step, no dependencies, no network calls, nothing stored or sent. The fonts and
 the avatar head are copies of the files in `next/assets`, so this folder deploys on its own.

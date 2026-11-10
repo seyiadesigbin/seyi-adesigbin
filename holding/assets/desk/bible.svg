@@ -2,8 +2,6 @@
   <rect x="6" y="4" width="138" height="190" rx="8" fill="#3a2517"/>
   <rect x="6" y="4" width="16" height="190" rx="6" fill="#2a1a10"/>
   <rect x="32" y="14" width="102" height="170" rx="4" stroke="#e0b24a" stroke-width="2"/>
-  <path d="M83 36v66M64 56h38" stroke="#e0b24a" stroke-width="7"/>
-  <rect x="37" y="138" width="92" height="30" rx="4" fill="#f3eee3" stroke-width="2.5"/>
-  <text x="83" y="159" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="17" font-weight="700" fill="#111" stroke="none">John 3:16</text>
+  <path d="M83 52v92M58 78h50" stroke="#e0b24a" stroke-width="8"/>
   <path d="M118 190v16l8-6 8 6v-16" fill="#ff4d2e" stroke-width="2.5"/>
 </svg>

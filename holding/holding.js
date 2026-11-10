@@ -15,6 +15,8 @@
     linkedinText: "Say hello on LinkedIn",
     linkedinUrl: "https://www.linkedin.com/in/seyiadesigbin/",
     newTab: " (opens in a new tab)",
+    verse: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+    verseRef: "John 3:16 (KJV)",
     hello: "Hi, I'm Seyi.",
     thanks: "Thank you! This looks much better!",
     welcomeTag: "Coming soon",
@@ -85,7 +87,10 @@
     a.appendChild(el("span", CONTENT.newTab, "sr-only"));
     n.appendChild(a);
   });
-  addNote("c-p", "Blank pink note", function () {});
+  addNote("c-p note--verse", "Note: " + CONTENT.verseRef, function (n) {
+    n.appendChild(el("p", CONTENT.verse, "note__verse"));
+    n.appendChild(el("p", CONTENT.verseRef, "note__mono"));
+  });
   addNote("c-g", "Blank green note", function () {});
 
   var total = notes.length;
