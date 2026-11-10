@@ -9,7 +9,7 @@ no framework, no build step, no libraries.
 
 | Part | Where | State |
 |---|---|---|
-| New site | `next/` | Built: Desk view, Report view, contact form, icon contact links |
+| New site | `next/` | Built: Desk view, Report view, contact form, icon contact links, avatar pop-up, animated career timeline with a flag per role, floating section menu, self-hosted fonts, share-preview tags, review mode |
 | Old template site | repo root (`index.html`, `css/`, `js/`, `fonts/`, `img/`) | Still the live site. Will be deleted in the final "swap" change |
 
 Still to come: a resume download, and the swap (move `next/` to the root, add the `CNAME` file, connect the domain).
@@ -19,7 +19,7 @@ Still to come: a resume download, and the swap (move `next/` to the root, add th
 One page, two ways of reading the same content. A small switch (top right) changes between them, and the address
 reflects the choice (`#desk` or `#report`).
 
-- **Desk**: a pinboard of notes you can drag (mouse, touch, or arrow keys on a focused note). Scattered on wide
+- **Desk**: a pinboard of notes that can be dragged (mouse, touch, or arrow keys on a focused note). Scattered on wide
   screens, tidy columns on medium screens, stacked on phones.
 - **Report**: an annual-report style page with key figures, a career timeline, areas of expertise, toolkit and contact.
 
@@ -74,16 +74,23 @@ next/
     timeline-runner.js  the avatar moves along the Report timeline to today
     flags.js            small SVG country flags (Nigeria, UK) shown next to each role
     section-menu.js     the floating, draggable button in the Report that opens a list of sections
-    review.js           owner-only review notes (pins, Export), fetched only when the address has ?review
+    review.js           maintainer-only review notes (pins, Export), fetched only when the address has ?review
 ```
 
 Moving a Desk note: positions are hand-placed in the `POS` table at the top of `next/js/desk.js` (x, y and tilt for each
 note on a 1200px-wide board).
 
+## Review mode
+
+Adding `?review` to the address (for example `next/index.html?review#report`) loads `js/review.js`. After "Add note" is switched on, clicking any element
+opens a note dialog and leaves a numbered pin. Notes are stored in the browser's localStorage. The panel offers Add note,
+a Notes list that jumps to each pin, Export (copies the notes with page, view, screen width and element), Reset site data
+(clears everything except the notes) and Clear all. Without `?review` the file is not loaded.
+
 ## Contact form
 
-Messages go through [Web3Forms](https://web3forms.com) to the owner's email. The access key in `content.js` is meant
-to be public: it can only send mail to the owner's own address. The form is only shown while a key is set.
+Messages go through [Web3Forms](https://web3forms.com) to the maintainer's email. The access key in `content.js` is meant
+to be public: it can only send mail to the maintainer's own address. The form is only shown while a key is set.
 
 ## Hosting and domain
 
@@ -93,6 +100,7 @@ second name are set up at the swap, so the old template is never shown on the ne
 
 ## Checking changes
 
-There are no automated tests. Changes so far have been checked by syntax-checking the JavaScript (`node --check`),
+CI (`.github/workflows/ci.yml`) syntax-checks every script in `next/js/` with `node --check` and checks that the local
+files referenced by `next/index.html` exist. There is no type check, unit test or build step. Changes so far have been checked by syntax-checking the JavaScript (`node --check`),
 running the logic against stand-in pages in Node, and looking at headless-browser screenshots. Dragging, keyboard
 use, phones and screen readers need a person to try them.

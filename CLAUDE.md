@@ -1,7 +1,7 @@
 # Project notes for Claude
 
-These add to the owner's global rules in `~/.claude/CLAUDE.md` (commits, pull requests, long chats). Where they
-conflict, ask the owner. Re-read the global file at the start of a session: it changes.
+Global rules apply (`~/.claude/CLAUDE.md`). This file adds only what is specific to this project and does not copy them.
+Where the two conflict, ask the maintainer. Re-read the global file at the start of a session: it changes.
 
 ## What this is
 
@@ -16,10 +16,18 @@ delete them before then.
 - All text and data live in `next/js/content.js` (`window.SITE`). Never hard-code facts in `desk.js`, `report.js` or
   the HTML. Both views must keep reading from that file.
 - Build DOM with `textContent` and element creation, not `innerHTML`, for anything derived from content.
-- Do not guess facts about the owner. Ask. Examples that were deliberately left out until given: the year they moved to
+- Do not guess facts about the maintainer. Ask. Examples that were deliberately left out until given: the year they moved to
   the UK, the resume file, real tool-usage weights (`tools[].weight` are placeholders).
 - The Web3Forms key in `content.js` is public by design; do not treat it as a secret, and do not add other secrets.
+- Contact details in `content.js` (email, phone) are real and public by design: this is a portfolio, and the maintainer
+  accepts it. This is the one exception to "no real data in the repo". Phone numbers are not a primary contact route.
 - Do not set up DNS or the `CNAME` file before the swap change, so the old template is never shown on the new domain.
+
+## Commands
+
+There is no install, type check, unit test or build step (no `package.json`). Open `next/index.html` in a browser to run
+the site. The checks that exist are under "How to check work". CI (`.github/workflows/ci.yml`) runs the first of them
+and a missing-file check on `next/index.html`.
 
 ## Structure
 
@@ -37,20 +45,18 @@ See `README.md` for the file map. Key points:
 
 - Behaviour respects `prefers-reduced-motion` (no animated count-up, no tidy animation).
 - Interactive things must work from the keyboard and carry accessible names.
-- Branches: `feature/`, `fix/`, `docs/` or `chore/` plus a short name. One branch per piece of work, and do not start a
-  new one while the previous is unmerged.
-- Commit and PR text is written to a file first, then `git commit -F` and `gh pr create --body-file` with absolute
-  paths. No mention of Claude or AI in commits or PRs.
 - Git on Windows warns "LF will be replaced by CRLF". This is expected and harmless.
 
 ## How to check work
 
-- `node --check` on every file in `next/js/`.
+- `node --check` on every file in `next/js/` (also run by CI).
 - Screenshots with headless Edge:
   `"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --headless --disable-gpu --no-first-run --user-data-dir=<temp dir> --window-size=1400,1900 --virtual-time-budget=5000 --screenshot=<file.png> "file:///.../next/index.html#desk"`
   Use `#report` for the Report. Add `--force-prefers-reduced-motion` to see final values of the count-up.
 - Limits of that setup: it will not render narrower than about 500px; it cannot drag or press keys; its animation clock
   is not normal; its network calls to Web3Forms failed, so only a real browser can confirm delivery.
+- There are no automated tests, so the definition of done is met by the checks above plus a stated list of what a person
+  still has to try. Cross-feature manual checks are not yet written down as a checklist.
 - Say plainly in each PR what was not run. A person must still try dragging, keyboard use, phones and screen readers.
 
 ## Roadmap
@@ -63,13 +69,13 @@ and robots.
 
 Agreed, not built:
 - **Headline rewrite** (`feature/headline-problem-solver`): the hero headline, lead text, ANALYST tag, Expertise "Data
-  Analysis" card and share-preview text should not lead with "Data Analysis"; the owner wants to come across as a
+  Analysis" card and share-preview text should not lead with "Data Analysis"; the maintainer wants to come across as a
   problem solver. Ask for wording and facts; do not invent them.
 - **Timeline changes**: show roles within each year, a country flag per role (all Nigeria except Heriot-Watt, UK
-  Scotland), keep recruiter-useful facts (title, dates, place) readable at a glance. Job details wait for the owner's
+  Scotland), keep recruiter-useful facts (title, dates, place) readable at a glance. Job details wait for the maintainer's
   career-hub data (months, refined role text).
-- **Resume PDF**, real tool weights, domain confirmation for share-preview URLs: waiting on the owner.
-- **The swap change**, last: DNS, `CNAME`, hosting. Stay on GitHub Pages with a public repo unless the owner decides
+- **Resume PDF**, real tool weights, domain confirmation for share-preview URLs: waiting on the maintainer.
+- **The swap change**, last: DNS, `CNAME`, hosting. Stay on GitHub Pages with a public repo unless the maintainer decides
   otherwise.
 
 Not yet seen in a real browser: the section-menu button's narrow-window fallback (bottom-left), phone widths, dragging,
