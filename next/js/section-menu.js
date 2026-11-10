@@ -87,7 +87,7 @@
       if (!drag || e.pointerId !== drag.id) return;
       var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
       if (!drag.moved && Math.abs(dx) + Math.abs(dy) < DRAG_PX) return;
-      if (!drag.moved) { drag.moved = true; close(); btn.setPointerCapture(e.pointerId); root.classList.add("is-dragging"); }
+      if (!drag.moved) { drag.moved = true; window.removeEventListener("scroll", goToCursor); close(); btn.setPointerCapture(e.pointerId); root.classList.add("is-dragging"); }
       var w = root.offsetWidth, h = root.offsetHeight;
       root.style.left = Math.min(Math.max(0, drag.left + dx), window.innerWidth - w) + "px";
       root.style.top = Math.min(Math.max(0, drag.top + dy), window.innerHeight - h) + "px";
@@ -100,6 +100,25 @@
     }
     btn.addEventListener("pointerup", end);
     btn.addEventListener("pointercancel", end);
+
+    // Where the button first goes: when the visitor first scrolls, it glides to just beside the mouse pointer, so it is
+    // close to where they are looking. It does this once, and not at all if it has been dragged. With touch (no
+    // pointer) it simply stays at its starting corner.
+    var cursor = null;
+    document.addEventListener("pointermove", function (e) { if (e.pointerType === "mouse") cursor = { x: e.clientX, y: e.clientY }; });
+    function goToCursor() {
+      if (!root.getClientRects().length) return;   // the Report is not showing: try again on a later scroll
+      window.removeEventListener("scroll", goToCursor);
+      if (!cursor || root.style.left) return;
+      var r = root.getBoundingClientRect(), w = root.offsetWidth, h = root.offsetHeight;
+      root.style.left = r.left + "px"; root.style.top = r.top + "px"; root.style.right = "auto"; root.style.bottom = "auto";
+      void root.offsetWidth;   // let the browser take the starting point before the move
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) root.style.transition = "left .4s ease-out, top .4s ease-out";
+      root.style.left = Math.min(Math.max(0, cursor.x + 28), window.innerWidth - w) + "px";
+      root.style.top = Math.min(Math.max(0, cursor.y + 28), window.innerHeight - h) + "px";
+      setTimeout(function () { root.style.transition = ""; }, 450);
+    }
+    window.addEventListener("scroll", goToCursor, { passive: true });
 
     window.addEventListener("resize", function () {
       if (root.style.left) {   // keep a dragged button on screen when the window shrinks
