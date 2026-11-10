@@ -1,0 +1,29 @@
+/* The floating section menu in the Report (see js/section-menu.js). Bubble style, to match the greeting pop-up. */
+.section-menu { position: fixed; left: var(--space-3); bottom: var(--space-3); z-index: 45; }
+.section-menu__btn {
+  all: unset; box-sizing: border-box; cursor: grab; touch-action: none; display: block;
+  width: 48px; height: 48px; border-radius: 50%; background: var(--paper); border: 2px solid #111; box-shadow: 3px 3px 0 #111;
+}
+.section-menu.is-dragging .section-menu__btn { cursor: grabbing; box-shadow: 5px 5px 0 #111; }
+.section-menu__btn:hover { background: var(--note-yellow); }
+.section-menu__btn:focus-visible, .section-menu__link:focus-visible { outline: 3px solid var(--report-blue); outline-offset: 2px; }
+.section-menu__icon { display: block; width: 100%; height: 100%; }
+.section-menu__icon rect { fill: #111; }
+.section-menu__icon .dot { fill: var(--report-accent); }
+
+/* The list opens away from the nearest edge (classes set by the script). */
+.section-menu__list {
+  position: absolute; bottom: 58px; left: 0; display: flex; flex-direction: column; gap: 4px; min-width: 170px;
+  padding: 8px; background: var(--paper); border: 2px solid #111; border-radius: 14px; box-shadow: 3px 3px 0 #111;
+  animation: section-menu-in .15s ease-out;
+}
+.section-menu.is-below .section-menu__list { bottom: auto; top: 58px; }
+.section-menu.is-right .section-menu__list { left: auto; right: 0; }
+.section-menu__list[hidden] { display: none; }
+.section-menu__link {
+  all: unset; box-sizing: border-box; cursor: pointer; padding: 7px 10px; border-radius: 8px;
+  font: 700 12px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: #111;
+}
+.section-menu__link:hover { background: #111; color: var(--note-yellow); }
+@keyframes section-menu-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .section-menu__list { animation: none; } }

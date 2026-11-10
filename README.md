@@ -61,6 +61,7 @@ next/
     avatar-popup.css    one-time avatar pop-up
     avatar-figure.css   the avatar figure (front view head size and run cycle, side view walk cycle)
     timeline-runner.css the running strip above the Report timeline
+    section-menu.css    the floating section menu button and its list
   js/
     content.js          all the text and data
     app.js              chooses the view, keeps the address and switch in sync
@@ -72,6 +73,7 @@ next/
     avatar-figure.js    the avatar as six pictures (head, torso, arms, legs) that can move apart
     timeline-runner.js  the avatar moves along the Report timeline to today
     flags.js            small SVG country flags (Nigeria, UK) shown next to each role
+    section-menu.js     the floating, draggable button in the Report that opens a list of sections
 ```
 
 Moving a Desk note: positions are hand-placed in the `POS` table at the top of `next/js/desk.js` (x, y and tilt for each
