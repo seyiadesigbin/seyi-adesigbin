@@ -29,20 +29,29 @@
   </header>
 
   <main>
-    <!-- Drawn desk objects behind the notes. Decoration only. -->
-    <div class="scene" aria-hidden="true">
-      <img class="obj obj--laptop" src="assets/desk/laptop.svg" alt="">
-      <img class="obj obj--mouse" src="assets/desk/mouse.svg" alt="">
-      <img class="obj obj--notebook" src="assets/desk/notebook.svg" alt="">
-      <img class="obj obj--pen" src="assets/desk/pen.svg" alt="">
-      <img class="obj obj--books" src="assets/desk/books.svg" alt="">
-      <img class="obj obj--pencil" src="assets/desk/pencil.svg" alt="">
-      <img class="obj obj--phone" src="assets/desk/phone.svg" alt="">
-      <img class="obj obj--mug" src="assets/desk/mug.svg" alt="">
-      <img class="obj obj--plant" src="assets/desk/plant.svg" alt="">
-    </div>
     <p class="hint" id="hint">Drag each note into an outline. With a keyboard, focus a note, move it with the arrow keys, then press Enter to snap it into the nearest outline.</p>
-    <div class="stage" id="stage"></div>
+
+    <!-- The desk is one tilted plane seen in perspective. Objects sit in a 3D layer (holding-3d.js adds their
+         thickness and shadow); the notes lie flat in a second layer drawn over it. Same tilt in both. -->
+    <div class="world" id="world">
+      <div class="world__layer world__layer--objects" aria-hidden="true">
+        <div class="scene">
+          <div class="o3 o3--mat" data-depth="4" data-noshadow style="--ar:1200 / 620"><img src="assets/desk/desk-mat.svg" alt=""></div>
+          <div class="o3 o3--laptop" data-depth="10" style="--ar:520 / 164"><img src="assets/desk/laptop-base.svg" alt=""><div class="o3__screen"><img src="assets/desk/laptop-screen.svg" alt=""></div></div>
+          <div class="o3 o3--mouse" data-depth="8" style="--ar:80 / 124"><img src="assets/desk/mouse.svg" alt=""></div>
+          <div class="o3 o3--notebook" data-depth="6" style="--ar:340 / 240"><img src="assets/desk/notebook.svg" alt=""></div>
+          <div class="o3 o3--pen" data-depth="6" style="--ar:220 / 28"><img src="assets/desk/pen.svg" alt=""></div>
+          <div class="o3 o3--books" data-depth="16" style="--ar:240 / 210"><img src="assets/desk/books.svg" alt=""></div>
+          <div class="o3 o3--pencil" data-depth="5" style="--ar:200 / 20"><img src="assets/desk/pencil.svg" alt=""></div>
+          <div class="o3 o3--phone" data-depth="8" style="--ar:70 / 130"><img src="assets/desk/phone.svg" alt=""></div>
+          <div class="o3 o3--mug" data-depth="22" style="--ar:130 / 110"><img src="assets/desk/mug.svg" alt=""></div>
+          <div class="o3 o3--plant" data-depth="14" style="--ar:150 / 150"><img src="assets/desk/plant.svg" alt=""></div>
+        </div>
+      </div>
+      <div class="world__layer">
+        <div class="plane"><div class="stage" id="stage"></div></div>
+      </div>
+    </div>
   </main>
 
   <!-- The head pops up bottom-right, then one speech bubble. Wording is set in holding.js (the CONTENT object). -->
@@ -53,5 +62,6 @@
 
   <noscript><p class="nojs">Seyi Adesigbin. Tidying the desk. Back soon.</p></noscript>
   <script src="holding.js"></script>
+  <script src="holding-3d.js"></script>
 </body>
 </html>

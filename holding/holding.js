@@ -27,6 +27,7 @@
   var KEY_STEP = 16;       // arrow-key movement; Shift moves three times as far
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  var world = document.getElementById("world");
   var stage = document.getElementById("stage");
   var toggle = document.getElementById("toggle");
   var countEl = document.getElementById("count");
@@ -115,8 +116,25 @@
       }
     }
     stage.style.height = geo.stageH + "px";
+    world.style.height = geo.stageH + "px";
     stage.style.setProperty("--u", String(w / 200));
     notes.forEach(function (n) { n.el.style.width = w + "px"; n.el.style.height = h + "px"; });
+  }
+
+
+  // The desk is tilted in perspective (see .world in holding.css). Turn a pointer position on the screen into a
+  // position on the stage by undoing the tilt. For a plane turned by "tilt" about its centre and seen with
+  // perspective "d", a plane point (x, y) from the centre lands at screen (x*k, y*cos(tilt)*k), k = d / (d - y*sin(tilt)).
+  var cs = getComputedStyle(world);
+  var TILT = parseFloat(cs.getPropertyValue("--tilt")) * Math.PI / 180;
+  var PERSP = parseFloat(cs.getPropertyValue("--persp"));
+  function toStage(clientX, clientY) {
+    var r = world.getBoundingClientRect();   // the world itself is not tilted, so this is the untilted box
+    var X = clientX - (r.left + r.width / 2), Y = clientY - (r.top + r.height / 2);
+    var sin = Math.sin(TILT), cos = Math.cos(TILT);
+    var y = Y * PERSP / (cos * PERSP + Y * sin);
+    var x = X * (PERSP - y * sin) / PERSP;
+    return { x: x + r.width / 2 - (r.width - stage.clientWidth) / 2, y: y + r.height / 2 };
   }
 
   function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
@@ -204,24 +222,25 @@
   function clearHot() { slots.forEach(function (s) { s.el.classList.remove("is-hot"); }); }
 
   function bindNote(n) {
-    var node = n.el, startX = 0, startY = 0, baseX = 0, baseY = 0, dragging = false;
+    var node = n.el, start = null, baseX = 0, baseY = 0, dragging = false;
 
     node.addEventListener("pointerdown", function (e) {
       if (e.button !== 0 || e.target.closest("a")) return;
       dragging = true;
-      startX = e.clientX; startY = e.clientY; baseX = n.x; baseY = n.y;
+      start = toStage(e.clientX, e.clientY); baseX = n.x; baseY = n.y;
       n.slot = null;
       node.classList.remove("is-snapping");
       node.classList.add("is-dragging");
       raise(n);
-      node.setPointerCapture(e.pointerId);
+      try { node.setPointerCapture(e.pointerId); } catch (err) { /* synthetic events: nothing to capture */ }
       render();
     });
 
     node.addEventListener("pointermove", function (e) {
       if (!dragging) return;
-      n.x = clamp(baseX + e.clientX - startX, 0, geo.stageW - geo.w);
-      n.y = clamp(baseY + e.clientY - startY, 0, geo.stageH - geo.h);
+      var p = toStage(e.clientX, e.clientY);
+      n.x = clamp(baseX + p.x - start.x, 0, geo.stageW - geo.w);
+      n.y = clamp(baseY + p.y - start.y, 0, geo.stageH - geo.h);
       place(n, false);
       clearHot();
       var near = nearestFree(n, SNAP_RATIO);

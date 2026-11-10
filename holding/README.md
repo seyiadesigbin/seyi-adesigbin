@@ -14,7 +14,8 @@ the avatar head are copies of the files in `next/assets`, so this folder deploys
 |------|---------|
 | `index.html` | Page shell, share-preview tags (`og:*`) |
 | `holding.css` | Styles. Colour tokens are copied from `next/css/tokens.css` |
-| `holding.js` | The game and all wording (the `CONTENT` object at the top) |
+| `holding.js` | The game and all wording (the `CONTENT` object at the top). Also turns pointer positions into positions on the tilted desk |
+| `holding-3d.js` | Gives the desk objects thickness and shadows, drops them in, and moves the lamplight with the pointer |
 | `assets/` | Fonts (with their OFL licences), `head.png`, and `desk/*.svg` (the drawn desk objects: laptop, mouse, notebook, pen, pencil, books, phone, mug, plant) |
 | `og-image.png` | 1200x630 share-preview card, built from `docs/holding-og-source.html` |
 | `SWAP.md` | Steps for moving the domain from Cloudflare to GitHub Pages |
@@ -26,7 +27,8 @@ as the custom domain. Do not add a `CNAME` file; that belongs to the swap change
 
 ## Checks
 
-- `node --check holding/holding.js` (also run by CI).
+- `node --check holding/*.js` (also run by CI).
+- The desk is a tilted plane in perspective: `--tilt` and `--persp` in `holding.css` (`.world`) are read by `holding.js` to undo the tilt when dragging. Change them there only.
 - Screenshots with headless Edge, as described in the root `CLAUDE.md`, open `holding/index.html`.
 - Regenerate the share image: open `docs/holding-og-source.html` in headless Edge with `--window-size=1200,630`
   `--screenshot=holding/og-image.png`.

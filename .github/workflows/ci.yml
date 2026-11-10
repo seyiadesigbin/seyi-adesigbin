@@ -21,8 +21,12 @@ jobs:
             echo "node --check $f"
             node --check "$f"
           done
-      - name: Syntax-check the holding page script
-        run: node --check holding/holding.js
+      - name: Syntax-check the holding page scripts
+        run: |
+          for f in holding/*.js; do
+            echo "node --check $f"
+            node --check "$f"
+          done
       - name: Check that local files referenced by holding/index.html exist
         run: |
           missing=0
