@@ -10,6 +10,7 @@ no framework, no build step, no libraries.
 | Part | Where | State |
 |---|---|---|
 | New site | `next/` | Built: Desk view, Report view, contact form, icon contact links, avatar pop-up, animated career timeline with a flag per role, floating section menu, self-hosted fonts, share-preview tags, review mode |
+| Holding page (temporary) | `holding/` | A playable "tidy the desk" coming-soon page, served by Cloudflare until the swap. Swap-day steps: `holding/SWAP.md` |
 | Old template site | repo root (`index.html`, `css/`, `js/`, `fonts/`, `img/`) | Still the live site. Will be deleted in the final "swap" change |
 
 Still to come: a resume download, and the swap (move `next/` to the root, add the `CNAME` file, connect the domain).

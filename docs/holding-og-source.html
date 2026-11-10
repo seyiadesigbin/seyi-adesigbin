@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- Source for holding/og-image.png (the share-preview card of the holding page). Not deployed.
+     Regenerate with headless Edge at exactly 1200x630 (see holding/README.md). -->
+<html lang="en"><head><meta charset="utf-8">
+<title>Holding page share image</title>
+<link rel="stylesheet" href="../holding/holding.css">
+<style>
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  .card { position: relative; width: 1200px; height: 630px; }
+  .card .note { --u: 1.7; width: 340px; height: 265px; cursor: default; }
+  .card .slot { width: 340px; height: 265px; }
+  .card .avatar { position: absolute; right: 40px; bottom: 28px; }
+</style></head>
+<body><div class="card">
+  <div class="slot" style="transform:translate(40px,40px)"></div>
+  <div class="slot" style="transform:translate(430px,40px)"></div>
+  <div class="slot" style="transform:translate(820px,40px)"></div>
+  <img class="obj" src="../holding/assets/desk/laptop.svg" alt="" style="left:30px;top:200px;width:480px;transform:rotate(-3deg)">
+  <img class="obj" src="../holding/assets/desk/books.svg" alt="" style="left:930px;top:300px;width:230px;transform:rotate(4deg)">
+  <img class="obj" src="../holding/assets/desk/mug.svg" alt="" style="left:1060px;top:30px;width:100px">
+  <img class="obj" src="../holding/assets/desk/pen.svg" alt="" style="left:560px;top:540px;width:200px;transform:rotate(-8deg)">
+
+  <div class="note c-g" style="transform:translate(80px,300px) rotate(-9deg);width:260px;height:200px"></div>
+  <div class="note c-p" style="transform:translate(820px,250px) rotate(8deg);width:260px;height:200px"></div>
+  <div class="note c-b" style="transform:translate(330px,330px) rotate(5deg);width:290px;height:200px"><a href="#">Say hello on LinkedIn</a></div>
+  <div class="note c-w" style="transform:translate(700px,330px) rotate(-6deg);width:300px;height:200px"><p class="note__name">Seyi Adesigbin</p><p class="note__mono">seyiadesigbin.com</p></div>
+  <div class="note c-y" style="--u:2.1;transform:translate(300px,70px) rotate(-4deg);width:440px;height:290px"><h1>Tidying the desk.</h1><p class="note__sub">Back soon.</p></div>
+
+  <aside class="avatar"><div class="avatar__head" style="transform:none;opacity:1;width:110px"><img src="../holding/assets/head.png" alt=""></div></aside>
+</div></body></html>

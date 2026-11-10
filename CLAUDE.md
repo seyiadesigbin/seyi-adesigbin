@@ -75,7 +75,8 @@ Agreed, not built:
   Scotland), keep recruiter-useful facts (title, dates, place) readable at a glance. Job details wait for the maintainer's
   career-hub data (months, refined role text).
 - **Resume PDF**, real tool weights, domain confirmation for share-preview URLs: waiting on the maintainer.
-- **The swap change**, last: DNS, `CNAME`, hosting. Stay on GitHub Pages with a public repo unless the maintainer decides
+- **Holding page** (`chore/holding-page`, in review): `holding/`, served by Cloudflare until the swap (planned around the end of December 2026). It is separate from `next/`: its wording lives in `holding/holding.js`.
+- **The swap change**, last: DNS, `CNAME`, hosting. Steps are in `holding/SWAP.md`; remove `holding/` and `docs/holding-og-source.html` afterwards. Stay on GitHub Pages with a public repo unless the maintainer decides
   otherwise.
 
 Not yet seen in a real browser: the section-menu button's narrow-window fallback (bottom-left), phone widths, dragging,
