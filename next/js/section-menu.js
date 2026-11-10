@@ -76,7 +76,7 @@
       if (!list.hidden && !root.contains(e.target)) close();
     });
 
-    // Dragging. The root is placed with left/top once it has been moved; until then CSS puts it bottom-left.
+    // Dragging. The root is placed with left/top once it has been moved; until then layout() or CSS places it.
     var suppress = false, drag = null;
     btn.addEventListener("pointerdown", function (e) {
       if (e.button !== undefined && e.button !== 0) return;
@@ -87,7 +87,7 @@
       if (!drag || e.pointerId !== drag.id) return;
       var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
       if (!drag.moved && Math.abs(dx) + Math.abs(dy) < DRAG_PX) return;
-      if (!drag.moved) { drag.moved = true; window.removeEventListener("scroll", goToCursor); close(); btn.setPointerCapture(e.pointerId); root.classList.add("is-dragging"); }
+      if (!drag.moved) { drag.moved = true; dragged = true; close(); btn.setPointerCapture(e.pointerId); root.classList.add("is-dragging"); }
       var w = root.offsetWidth, h = root.offsetHeight;
       root.style.left = Math.min(Math.max(0, drag.left + dx), window.innerWidth - w) + "px";
       root.style.top = Math.min(Math.max(0, drag.top + dy), window.innerHeight - h) + "px";
@@ -101,39 +101,35 @@
     btn.addEventListener("pointerup", end);
     btn.addEventListener("pointercancel", end);
 
-    // Where the button first goes: when the visitor first scrolls, it fades out and back in just beside the mouse pointer, so it is
-    // close to where they are looking. It does this once, and not at all if it has been dragged. With touch (no
-    // pointer) it simply stays at its starting corner.
-    var cursor = null;
-    document.addEventListener("pointermove", function (e) { if (e.pointerType === "mouse") cursor = { x: e.clientX, y: e.clientY }; });
-    function goToCursor() {
-      if (!root.getClientRects().length) return;   // the Report is not showing: try again on a later scroll
-      // Browsers restore the scroll position after a refresh, which fires a scroll before the mouse has moved.
-      // That must not use up the one move, so wait until the pointer's position is known.
-      if (!cursor) return;
-      window.removeEventListener("scroll", goToCursor);
-      if (root.style.left) return;
-      var w = root.offsetWidth, h = root.offsetHeight;
-      function jump() {
-        root.style.left = Math.min(Math.max(0, cursor.x + 28), window.innerWidth - w) + "px";
-        root.style.top = Math.min(Math.max(0, cursor.y + 28), window.innerHeight - h) + "px";
-        root.style.right = "auto"; root.style.bottom = "auto";
-        root.classList.remove("is-hiding");
-      }
-      // Fade out where it was, then fade in beside the pointer (straight there with reduced motion).
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { jump(); return; }
-      root.classList.add("is-hiding");
-      setTimeout(jump, 220);
+    // Where the button sits. When there is empty space to the right of the page content, it stays there at mid-height (never over
+    // the content, and clear of the greeting head at the bottom-right). With no such space (narrow windows) it stays in the
+    // bottom-left corner. It does not follow the mouse. Once the visitor drags it, it stays where they put it.
+    var GUTTER_MIN = 72;   // free space needed on the right: the button is 48px wide, plus breathing room
+    var dragged = false;
+    function layout() {
+      if (dragged || !root.getClientRects().length) return;   // dragged by the visitor, or the Report is not showing
+      var host = root.parentNode.getBoundingClientRect();
+      var gutter = document.documentElement.clientWidth - host.right;
+      if (gutter < GUTTER_MIN) { root.style.left = root.style.top = root.style.right = root.style.bottom = ""; return; }
+      root.style.left = Math.round(host.right + (gutter - root.offsetWidth) / 2) + "px";
+      root.style.top = Math.round((window.innerHeight - root.offsetHeight) / 2) + "px";
+      root.style.right = "auto"; root.style.bottom = "auto";
     }
-    window.addEventListener("scroll", goToCursor, { passive: true });
-
     window.addEventListener("resize", function () {
-      if (root.style.left) {   // keep a dragged button on screen when the window shrinks
+      if (dragged) {   // keep a dragged button on screen when the window shrinks
         var r = root.getBoundingClientRect();
         root.style.left = Math.min(Math.max(0, r.left), window.innerWidth - r.width) + "px";
         root.style.top = Math.min(Math.max(0, r.top), window.innerHeight - r.height) + "px";
-      }
+      } else layout();
     });
+    // Place it as soon as the Report is shown or resized (not on first scroll, which made it jump), then fade it in.
+    root.classList.add("is-placing");
+    function placed() { layout(); if (root.getClientRects().length) root.classList.remove("is-placing"); }
+    if (window.ResizeObserver) {
+      new ResizeObserver(function () { placed(); }).observe(document.documentElement);
+    }
+    window.addEventListener("load", placed);
+    setTimeout(placed, 0);
     return root;
   }
 
