@@ -5,6 +5,8 @@ Pages. It shares the Desk's look: a dark board of tilted sticky notes. The notes
 tidy them into dashed outlines (drag, or arrow keys then Enter, or the "Tidy up" button). When all five are placed the
 avatar says thanks.
 
+On arrival a dialog says "Coming soon" and offers to tidy the desk. The desk is drawn in 3D (a tilted plane with solid objects, including a Bible labelled "John 3:16").
+
 Plain HTML, CSS and JavaScript. No build step, no dependencies, no network calls, nothing stored or sent. The fonts and
 the avatar head are copies of the files in `next/assets`, so this folder deploys on its own.
 
@@ -16,7 +18,7 @@ the avatar head are copies of the files in `next/assets`, so this folder deploys
 | `holding.css` | Styles. Colour tokens are copied from `next/css/tokens.css` |
 | `holding.js` | The game and all wording (the `CONTENT` object at the top). Also turns pointer positions into positions on the tilted desk |
 | `holding-3d.js` | Gives the desk objects thickness and shadows, drops them in, and moves the lamplight with the pointer |
-| `assets/` | Fonts (with their OFL licences), `head.png`, and `desk/*.svg` (the drawn desk objects: laptop, mouse, notebook, pen, pencil, books, phone, mug, plant) |
+| `assets/` | Fonts (with their OFL licences), `head.png`, and `desk/*.svg` (the drawn desk objects: laptop, mouse, notebook, pen, pencil, books, phone, Bible, mug, plant, desk mat) |
 | `og-image.png` | 1200x630 share-preview card, built from `docs/holding-og-source.html` |
 | `SWAP.md` | Steps for moving the domain from Cloudflare to GitHub Pages |
 

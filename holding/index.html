@@ -44,6 +44,7 @@
           <div class="o3 o3--books" data-depth="16" style="--ar:240 / 210"><img src="assets/desk/books.svg" alt=""></div>
           <div class="o3 o3--pencil" data-depth="5" style="--ar:200 / 20"><img src="assets/desk/pencil.svg" alt=""></div>
           <div class="o3 o3--phone" data-depth="8" style="--ar:70 / 130"><img src="assets/desk/phone.svg" alt=""></div>
+          <div class="o3 o3--bible" data-depth="14" style="--ar:150 / 200"><img src="assets/desk/bible.svg" alt=""></div>
           <div class="o3 o3--mug" data-depth="22" style="--ar:130 / 110"><img src="assets/desk/mug.svg" alt=""></div>
           <div class="o3 o3--plant" data-depth="14" style="--ar:150 / 150"><img src="assets/desk/plant.svg" alt=""></div>
         </div>
@@ -53,6 +54,17 @@
       </div>
     </div>
   </main>
+
+  <!-- Welcome dialog: says what this page is, then offers the game. Wording is in holding.js (CONTENT). -->
+  <dialog class="welcome" id="welcome" aria-labelledby="welcome-title" aria-describedby="welcome-text">
+    <p class="welcome__tag" id="welcome-tag"></p>
+    <h2 class="welcome__title" id="welcome-title"></h2>
+    <p class="welcome__text" id="welcome-text"></p>
+    <div class="welcome__actions">
+      <button type="button" class="welcome__btn welcome__btn--go" id="welcome-go"></button>
+      <button type="button" class="welcome__btn" id="welcome-look"></button>
+    </div>
+  </dialog>
 
   <!-- The head pops up bottom-right, then one speech bubble. Wording is set in holding.js (the CONTENT object). -->
   <aside class="avatar" id="avatar" hidden>

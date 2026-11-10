@@ -17,6 +17,11 @@
     newTab: " (opens in a new tab)",
     hello: "Hi, I'm Seyi.",
     thanks: "Thank you! This looks much better!",
+    welcomeTag: "Coming soon",
+    welcomeTitle: "Seyi Adesigbin",
+    welcomeText: "Tidying the desk. Back soon.",
+    welcomeGo: "Tidy the desk",
+    welcomeLook: "Just looking",
     tidy: "Tidy up",
     mess: "Mess it up again",
     count: function (n, total) { return n + " of " + total + " tidied"; }
@@ -309,18 +314,51 @@
   messUp(false);
 
   // The head pops up, then the bubble. With reduced motion everything appears at once.
-  function intro() {
-    avatar.hidden = false;
-    avatar.classList.add("is-up");
-    introDone = true;
-    setBubble(CONTENT.hello);
+  var introStarted = false;
+  function startIntro() {
+    if (introStarted) return;
+    introStarted = true;
+    if (reduced) {
+      avatar.hidden = false;
+      avatar.classList.add("is-up");
+      introDone = true;
+      setBubble(CONTENT.hello);
+      return;
+    }
+    setTimeout(function () {
+      avatar.hidden = false;
+      void avatar.offsetWidth;
+      avatar.classList.add("is-up");
+      bubble.parentNode.hidden = true;
+      setTimeout(function () { bubble.parentNode.hidden = false; introDone = true; setBubble(CONTENT.hello); }, 700);
+    }, 400);
   }
-  if (reduced) intro();
-  else setTimeout(function () {
-    avatar.hidden = false;
-    void avatar.offsetWidth;
-    avatar.classList.add("is-up");
-    bubble.parentNode.hidden = true;
-    setTimeout(function () { bubble.parentNode.hidden = false; introDone = true; setBubble(CONTENT.hello); }, 700);
-  }, 700);
+
+  // Welcome dialog: says what the page is, then offers the game. The avatar greets once it is closed.
+  // Shown on every visit (nothing is stored). Without <dialog> support the page simply starts.
+  var welcome = document.getElementById("welcome");
+  document.getElementById("welcome-tag").textContent = CONTENT.welcomeTag;
+  document.getElementById("welcome-title").textContent = CONTENT.welcomeTitle;
+  document.getElementById("welcome-text").textContent = CONTENT.welcomeText;
+  var goBtn = document.getElementById("welcome-go"), lookBtn = document.getElementById("welcome-look");
+  goBtn.textContent = CONTENT.welcomeGo;
+  lookBtn.textContent = CONTENT.welcomeLook;
+
+  if (welcome && typeof welcome.showModal === "function") {
+    welcome.addEventListener("close", startIntro);
+    lookBtn.addEventListener("click", function () { welcome.close(); });
+    goBtn.addEventListener("click", function () {
+      welcome.close();
+      notes[0].el.focus({ preventScroll: true });   // lands on the headline note, ready to be moved
+    });
+    welcome.addEventListener("click", function (e) {   // a click on the backdrop closes it
+      var r = welcome.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) welcome.close();
+    });
+    welcome.showModal();
+    goBtn.focus();
+  } else {
+    if (welcome) welcome.hidden = true;
+    startIntro();
+  }
 })();
