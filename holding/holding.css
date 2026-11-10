@@ -68,11 +68,11 @@ main { position: relative; overflow: hidden; padding: 0 24px 160px; }
   display: flex; flex-direction: column; justify-content: center; gap: calc(var(--u, 1) * 8px);
   padding: calc(var(--u, 1) * 14px);
   box-shadow: 0 14px 26px rgba(0, 0, 0, .45);
-  cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+  cursor: url("assets/cursor/grab.svg") 16 12, grab; touch-action: none; user-select: none; -webkit-user-select: none;
   will-change: transform;
 }
 .note.is-snapping { transition: transform .35s cubic-bezier(.2, 1.2, .4, 1); }
-.note.is-dragging { cursor: grabbing; box-shadow: 0 26px 40px rgba(0, 0, 0, .6); }
+.note.is-dragging { cursor: url("assets/cursor/grabbing.svg") 16 14, grabbing; box-shadow: 0 26px 40px rgba(0, 0, 0, .6); }
 .note.is-placed { box-shadow: 0 6px 12px rgba(0, 0, 0, .4); }
 .note.c-y { background: var(--note-yellow); }
 .note.c-p { background: var(--note-pink); }

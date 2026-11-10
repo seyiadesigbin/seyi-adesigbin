@@ -21,7 +21,7 @@ the avatar head are copies of the files in `next/assets`, so this folder deploys
 | `assets/` | Fonts (with their OFL licences), `head.png`, and `desk/*.svg` (the drawn desk objects: laptop, mouse, notebook, pen, pencil, books, phone, Bible, mug, plant, desk mat) |
 | `holding-sound.js` | Small synthesised sound effects (Web Audio, no audio files) and the mute switch |
 | `og-image.png` | 1200x630 share-preview card: a screenshot of this page opened as `index.html?share` |
-| `favicon.png`, `apple-touch-icon.png` | Tab and home-screen icons, cropped from the avatar head |
+| `favicon.png`, `favicon-32.png`, `apple-touch-icon.png` | Tab icon (whole head, transparent background) and the iPhone home-screen icon (head on the note yellow), made from the avatar head. `assets/cursor/*.svg` are the open and closed hand cursors shown over notes |
 | `SWAP.md` | Steps for moving the domain from Cloudflare to GitHub Pages |
 
 ## Deploy (Cloudflare)
