@@ -144,7 +144,7 @@
 
     (c.phones || []).forEach(function (ph) {
       var row = el("li");
-      row.appendChild(document.createTextNode(ph.label + ": " + ph.display + " "));
+      row.appendChild(document.createTextNode(ph.label + (ph.showNumber === false ? " " : ": " + ph.display + " ")));
       var icons = el("span", "icon-links");
       if (ph.call) icons.appendChild(window.Icons.link("call", "tel:" + ph.e164, "Call " + ph.display));
       if (ph.whatsapp) icons.appendChild(window.Icons.link("whatsapp", "https://wa.me/" + ph.e164.replace("+", ""), "WhatsApp " + ph.display, true));

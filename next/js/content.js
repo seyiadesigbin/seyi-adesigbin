@@ -36,9 +36,10 @@ window.SITE = {
     email: "oluwaseyiadesigbin@gmail.com",
     // "e164" is the dialling form used in tel: links (digits after +, no spaces); "display" is what visitors read.
     // The UK number was given as +44 07344 060334; the trunk "0" is dropped in international format.
-    // Only the UK number is shown. The Nigerian numbers were dropped and WhatsApp links removed (owner's decision).
+    // Only the UK number is used. The Nigerian numbers were dropped (owner's decision). "showNumber: false" shows only
+    // the call and WhatsApp icons; the number stays inside the links (and in their hover text).
     phones: [
-      { label: "Call", display: "+44 7344 060334", e164: "+447344060334", call: true, whatsapp: false }
+      { label: "Call or WhatsApp", display: "+44 7344 060334", e164: "+447344060334", call: true, whatsapp: true, showNumber: false }
     ],
     // Not linked on the old site either (href was empty). Add a path like "assets/resume.pdf" when ready.
     resume: null,
