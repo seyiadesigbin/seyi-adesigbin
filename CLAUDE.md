@@ -58,15 +58,10 @@ See `README.md` for the file map. Key points:
 This is the one tracking list for agreed work. Rule: when a feature or task is agreed in chat, add it here in the same
 change, and remove it when it is merged. Every handover lists everything below, not only open pull requests.
 
-Done and merged (do not redo): avatar pop-up, animated career timeline, self-hosted fonts, share-preview tags, sitemap
+Done and merged (do not redo): avatar pop-up, review notes (?review), animated career timeline, self-hosted fonts, share-preview tags, sitemap
 and robots.
 
 Agreed, not built:
-- **Review notes** (`feature/review-notes`): a review mode switched on by `?review` in the address. Click anything, type
-  a note, and a pin appears. Notes are kept in the browser (`localStorage`); an Export button copies them with the page,
-  view (Desk or Report), screen width and element name. One file, `next/js/review.js`, loaded only with `?review`. Pins
-  must survive Desk re-layout. No server, no database. Owner reviews in Chrome profile "Profile 2" through a Desktop
-  shortcut.
 - **Headline rewrite** (`feature/headline-problem-solver`): the hero headline, lead text, ANALYST tag, Expertise "Data
   Analysis" card and share-preview text should not lead with "Data Analysis"; the owner wants to come across as a
   problem solver. Ask for wording and facts; do not invent them.

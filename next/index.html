@@ -63,5 +63,13 @@
   <script src="js/report.js"></script>
   <script src="js/avatar-popup.js"></script>
   <script src="js/app.js"></script>
+  <script>
+    // Review notes tool: only fetched when the address has ?review
+    if (/[?&]review(&|=|$)/.test(location.search)) {
+      var rv = document.createElement("script");
+      rv.src = "js/review.js";
+      document.body.appendChild(rv);
+    }
+  </script>
 </body>
 </html>

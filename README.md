@@ -74,6 +74,7 @@ next/
     timeline-runner.js  the avatar moves along the Report timeline to today
     flags.js            small SVG country flags (Nigeria, UK) shown next to each role
     section-menu.js     the floating, draggable button in the Report that opens a list of sections
+    review.js           owner-only review notes (pins, Export), fetched only when the address has ?review
 ```
 
 Moving a Desk note: positions are hand-placed in the `POS` table at the top of `next/js/desk.js` (x, y and tilt for each
