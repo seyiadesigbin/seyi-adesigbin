@@ -30,7 +30,7 @@ body {
   font: 16px/1.5 var(--font-body);
   background-color: var(--desk-bg);
   /* lamplight from the top-left, then the dot grid */
-  background-image: radial-gradient(ellipse 60% 100% at 12% 0%, rgba(255, 216, 77, .13), transparent 70%),
+  background-image: radial-gradient(ellipse 60% 100% at var(--gx, 12%) 0%, rgba(255, 216, 77, .13), transparent 70%),
                     radial-gradient(rgba(255, 255, 255, .09) 1.5px, transparent 1.5px);
   background-size: 100% 700px, 26px 26px;
   background-repeat: no-repeat, repeat;
@@ -46,6 +46,8 @@ body {
   font: 700 12px var(--font-mono); letter-spacing: .1em; text-transform: uppercase;
   background: var(--note-yellow); color: #111; border: 0; padding: 9px 14px; cursor: pointer;
 }
+.bar__btn--quiet { background: transparent; color: #fff; border: 2px solid rgba(255, 255, 255, .45); padding: 7px 12px; }
+.bar__btn--quiet[aria-pressed="false"] { color: #aaa; border-color: rgba(255, 255, 255, .25); }
 .bar__btn:focus-visible, .note:focus-visible, .note a:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 .bar__count { font: 500 12px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: #cfcfcf; }
 
@@ -53,7 +55,7 @@ main { position: relative; overflow: hidden; padding: 0 24px 160px; }
 .hint { position: relative; z-index: 1; max-width: 640px; margin: 0 auto 24px; text-align: center; color: #cfcfcf; font: 500 13px/1.5 var(--font-mono); }
 
 /* The board. Notes and outlines are placed by holding.js (it sets the stage height). */
-.stage { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
+.stage { position: absolute; top: 0; left: 50%; width: min(1100px, 100%); transform: translateX(-50%); }
 
 .slot {
   position: absolute; border: 2px dashed rgba(255, 255, 255, .28); border-radius: 4px;
@@ -66,11 +68,11 @@ main { position: relative; overflow: hidden; padding: 0 24px 160px; }
   display: flex; flex-direction: column; justify-content: center; gap: calc(var(--u, 1) * 8px);
   padding: calc(var(--u, 1) * 14px);
   box-shadow: 0 14px 26px rgba(0, 0, 0, .45);
-  cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+  cursor: url("assets/cursor/grab.svg") 16 12, grab; touch-action: none; user-select: none; -webkit-user-select: none;
   will-change: transform;
 }
 .note.is-snapping { transition: transform .35s cubic-bezier(.2, 1.2, .4, 1); }
-.note.is-dragging { cursor: grabbing; box-shadow: 0 26px 40px rgba(0, 0, 0, .6); }
+.note.is-dragging { cursor: url("assets/cursor/grabbing.svg") 16 14, grabbing; box-shadow: 0 26px 40px rgba(0, 0, 0, .6); }
 .note.is-placed { box-shadow: 0 6px 12px rgba(0, 0, 0, .4); }
 .note.c-y { background: var(--note-yellow); }
 .note.c-p { background: var(--note-pink); }
@@ -83,6 +85,8 @@ main { position: relative; overflow: hidden; padding: 0 24px 160px; }
 .note__name { font: 700 calc(var(--u, 1) * 24px)/1.1 var(--font-head); }
 .note__mono { font: 500 calc(var(--u, 1) * 12px)/1.3 var(--font-mono); letter-spacing: .04em; overflow-wrap: anywhere; }
 .note a { font: 700 calc(var(--u, 1) * 22px)/1.1 var(--font-hand); color: #111; text-underline-offset: 3px; user-select: text; }
+.note--verse { padding: calc(var(--u, 1) * 10px); gap: calc(var(--u, 1) * 6px); }
+.note__verse { font: 700 max(14px, calc(var(--u, 1) * 17px))/1.05 var(--font-hand); }
 .note__blank { opacity: 0; }  /* blank notes keep their size but show nothing */
 
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -129,30 +133,89 @@ main { position: relative; overflow: hidden; padding: 0 24px 160px; }
 }
 
 /*
- * The desk: drawn objects (assets/desk/*.svg) lie behind the notes. They are placed from the centre line
- * (left: 50% + x) so they stay with the board; at narrower widths some are hidden and the rest move in.
+ * The desk in 3D. .world holds two layers with the same perspective and tilt: the objects (a real 3D layer, so
+ * the laptop screen can stand up and objects get thickness) and the notes (flat paper, drawn over the objects).
+ * holding.js reads --tilt and --persp to turn pointer positions back into positions on the desk, so keep them
+ * here only. Objects are placed from the centre line (left: 50% + x), in desk pixels from the top of the board.
  */
-.scene { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-.obj { position: absolute; height: auto; filter: drop-shadow(0 12px 16px rgba(0, 0, 0, .5)); }
-.obj--laptop   { left: calc(50% - 540px); top: 270px; width: 500px; transform: rotate(-2deg); }
-.obj--mouse    { left: calc(50% + 10px);  top: 300px; width: 64px;  transform: rotate(12deg); }
-.obj--notebook { left: calc(50% + 110px); top: 400px; width: 320px; transform: rotate(3deg); }
-.obj--pen      { left: calc(50% + 170px); top: 440px; width: 190px; transform: rotate(-22deg); }
-.obj--books    { left: calc(50% + 360px); top: 240px; width: 210px; transform: rotate(4deg); }
-.obj--pencil   { left: calc(50% - 300px); top: 650px; width: 190px; transform: rotate(-6deg); }
-.obj--phone    { left: calc(50% - 60px);  top: 620px; width: 62px;  transform: rotate(-14deg); }
-.obj--mug      { left: calc(50% + 520px); top: 40px;  width: 100px; }
-.obj--plant    { left: calc(50% - 650px); top: 50px;  width: 150px; transform: rotate(10deg); }
+.world { --tilt: 32deg; --persp: 2400px; position: relative; margin: 0 auto; }
+.world__layer { position: absolute; inset: 0; perspective: var(--persp); }
+.world__layer--objects { pointer-events: none; }
+.plane, .scene { position: absolute; inset: 0; transform: rotateX(var(--tilt)); }
+.scene { transform-style: preserve-3d; }
+
+.o3 { position: absolute; aspect-ratio: var(--ar); transform-style: preserve-3d; }
+.o3__in { position: absolute; inset: 0; transform-style: preserve-3d; }
+.o3 img { position: absolute; left: 0; top: 0; width: 100%; height: auto; display: block; }
+.o3__side { filter: brightness(.42); }
+.o3__shadow {
+  filter: brightness(0) blur(7px); opacity: .5;
+  transform: translate(calc(12px - var(--lx, 0) * 8px), calc(16px - var(--ly, 0) * 6px));
+}
+/* Laptop screen: hinged at the far edge of the keyboard, standing up and leaning back. */
+.o3__screen {
+  position: absolute; left: 0; bottom: 100%; width: 100%; aspect-ratio: 520 / 270;
+  transform-origin: 50% 100%; transform: translateZ(10px) rotateX(-70deg);
+}
+
+.o3--mat      { left: 50%; top: 30px; width: min(1200px, 96%); transform: translateX(-50%); }
+.o3--laptop   { left: calc(50% - 540px); top: 467px; width: 500px; transform: rotate(-2deg); }
+.o3--mouse    { left: calc(50% + 10px);  top: 237px; width: 64px;  transform: rotate(12deg); }
+.o3--notebook { left: calc(50% + 110px); top: 337px; width: 320px; transform: rotate(3deg); }
+.o3--pen      { left: calc(50% + 170px); top: 377px; width: 190px; transform: rotate(-22deg); }
+.o3--books    { left: calc(50% + 360px); top: 177px; width: 210px; transform: rotate(4deg); }
+.o3--pencil   { left: calc(50% - 300px); top: 587px; width: 190px; transform: rotate(-6deg); }
+.o3--phone    { left: calc(50% - 60px);  top: 557px; width: 62px;  transform: rotate(-14deg); }
+.o3--bible    { left: calc(50% + 395px); top: 390px; width: 150px; transform: rotate(-6deg); }
+.o3--mug      { left: calc(50% + 520px); top: -10px; width: 100px; }
+.o3--plant    { left: calc(50% - 650px); top: -10px; width: 150px; transform: rotate(10deg); }
+
+/* Objects drop onto the desk one after another (JS sets --i). */
+@keyframes o3-drop { from { transform: translate3d(0, -50px, 150px); } }
+.has-drop .o3__in { animation: o3-drop .7s cubic-bezier(.2, 1.3, .4, 1) both; animation-delay: calc(var(--i, 0) * 90ms); }
 
 @media (max-width: 1100px) {
-  .obj--notebook, .obj--books, .obj--pencil, .obj--phone, .obj--plant { display: none; }
-  .obj--laptop { left: calc(50% - 300px); top: 400px; width: 420px; }
-  .obj--mouse  { left: calc(50% + 150px); top: 440px; width: 56px; }
-  .obj--pen    { left: calc(50% + 110px); top: 560px; width: 150px; }
-  .obj--mug    { left: calc(50% + 190px); top: 330px; width: 84px; }
+  .o3--mat, .o3--notebook, .o3--books, .o3--pencil, .o3--phone, .o3--plant { display: none; }
+  .o3--laptop { left: calc(50% - 300px); top: 555px; width: 420px; }
+  .o3--mouse  { left: calc(50% + 150px); top: 377px; width: 56px; }
+  .o3--pen    { left: calc(50% + 110px); top: 497px; width: 150px; }
+  .o3--mug    { left: calc(50% + 190px); top: 267px; width: 84px; }
+  .o3--bible  { left: calc(50% + 190px); top: 560px; width: 110px; }
 }
 @media (max-width: 700px) {
-  .obj--mouse, .obj--pen { display: none; }
-  .obj--laptop { left: calc(50% - 170px); top: 480px; width: 340px; }
-  .obj--mug    { left: calc(50% + 100px); top: 440px; width: 70px; }
+  .o3--mouse, .o3--pen { display: none; }
+  .o3--laptop { left: calc(50% - 170px); top: 594px; width: 340px; }
+  .o3--mug    { left: calc(50% + 100px); top: 377px; width: 70px; }
+  .o3--bible  { left: calc(50% + 100px); top: 590px; width: 84px; }
 }
+@media (prefers-reduced-motion: reduce) { .has-drop .o3__in { animation: none; } }
+
+/* Welcome dialog (native <dialog>: focus stays inside, Esc closes). Same look as the avatar's speech bubble. */
+.welcome {
+  margin: auto; width: min(440px, calc(100vw - 32px)); padding: 28px 28px 24px;
+  background: var(--paper); color: #111; border: 3px solid #111; border-radius: 6px;
+  box-shadow: 8px 8px 0 #111; text-align: left;
+}
+.welcome::backdrop { background: rgba(10, 10, 14, .72); }
+.welcome[open] { animation: welcome-in .35s cubic-bezier(.2, 1.3, .4, 1); }
+@keyframes welcome-in { from { opacity: 0; transform: translateY(16px) scale(.96) rotate(-1.5deg); } }
+.welcome__tag {
+  display: inline-block; margin-bottom: 14px; padding: 4px 10px; background: var(--note-yellow);
+  font: 700 12px var(--font-mono); letter-spacing: .12em; text-transform: uppercase;
+  transform: rotate(-2deg); border: 2px solid #111;
+}
+.welcome__title { font: 700 clamp(30px, 8vw, 40px)/1.05 var(--font-head); margin-bottom: 10px; }
+.welcome__text { font: 700 28px/1.1 var(--font-hand); margin-bottom: 22px; }
+.welcome__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.welcome__btn {
+  font: 700 12px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; cursor: pointer;
+  background: var(--paper); color: #111; border: 2px solid #111; padding: 10px 14px;
+}
+.welcome__btn--go { background: var(--note-yellow); box-shadow: 3px 3px 0 #111; }
+.welcome__btn:focus-visible { outline: 3px solid var(--report-blue, #2b59ff); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .welcome[open] { animation: none; } }
+
+/* ?share: a clean frame for the share-preview picture (no controls, no hint). */
+.share .bar, .share .hint { display: none; }
+html:has(.share), .share { overflow: hidden; }
+.share main { margin-top: -60px; }

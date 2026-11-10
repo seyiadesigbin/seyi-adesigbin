@@ -7,7 +7,7 @@
  */
 (function () {
   var CONTENT = {
-    headline: "Tidying the desk.",
+    headline: "Tidying my desk.",
     headlineDone: "Desk tidied.",
     sub: "Back soon.",
     name: "Seyi Adesigbin",
@@ -15,8 +15,16 @@
     linkedinText: "Say hello on LinkedIn",
     linkedinUrl: "https://www.linkedin.com/in/seyiadesigbin/",
     newTab: " (opens in a new tab)",
+    verse: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+    verseRef: "John 3:16 (KJV)",
     hello: "Hi, I'm Seyi.",
     thanks: "Thank you! This looks much better!",
+    welcomeTag: "Coming soon",
+    welcomeTitle: "Seyi Adesigbin",
+    welcomeText: "Tidying my desk. Back soon.",
+    welcomeGo: "Tidy the desk",
+    soundOn: "Sound: on",
+    soundOff: "Sound: off",
     tidy: "Tidy up",
     mess: "Mess it up again",
     count: function (n, total) { return n + " of " + total + " tidied"; }
@@ -27,7 +35,9 @@
   var KEY_STEP = 16;       // arrow-key movement; Shift moves three times as far
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  var world = document.getElementById("world");
   var stage = document.getElementById("stage");
+  var soundBtn = document.getElementById("sound");
   var toggle = document.getElementById("toggle");
   var countEl = document.getElementById("count");
   var avatar = document.getElementById("avatar");
@@ -39,6 +49,19 @@
     if (className) n.className = className;
     return n;
   }
+
+  // "?share" (used once to take the share-preview picture, see README.md): fixed scatter, no bar, hint or dialog.
+  var share = /[?&]share\b/.test(location.search);
+  var seed = 23;
+  function rand() {
+    if (!share) return Math.random();
+    seed = (seed * 16807) % 2147483647;   // small seeded generator so the picture is repeatable
+    return (seed - 1) / 2147483646;
+  }
+  if (share) document.body.classList.add("share");
+
+  function sfx(name) { if (window.HoldingSound) window.HoldingSound.play(name); }
+  var winDelay = 120, wasDone = false;
 
   var notes = [];   // { el, x, y, r, slot }  slot is an outline index or null
   var slots = [];   // { el, x, y }
@@ -79,7 +102,10 @@
     a.appendChild(el("span", CONTENT.newTab, "sr-only"));
     n.appendChild(a);
   });
-  addNote("c-p", "Blank pink note", function () {});
+  addNote("c-p note--verse", "Note: " + CONTENT.verseRef, function (n) {
+    n.appendChild(el("p", CONTENT.verse, "note__verse"));
+    n.appendChild(el("p", CONTENT.verseRef, "note__mono"));
+  });
   addNote("c-g", "Blank green note", function () {});
 
   var total = notes.length;
@@ -115,8 +141,25 @@
       }
     }
     stage.style.height = geo.stageH + "px";
+    world.style.height = geo.stageH + "px";
     stage.style.setProperty("--u", String(w / 200));
     notes.forEach(function (n) { n.el.style.width = w + "px"; n.el.style.height = h + "px"; });
+  }
+
+
+  // The desk is tilted in perspective (see .world in holding.css). Turn a pointer position on the screen into a
+  // position on the stage by undoing the tilt. For a plane turned by "tilt" about its centre and seen with
+  // perspective "d", a plane point (x, y) from the centre lands at screen (x*k, y*cos(tilt)*k), k = d / (d - y*sin(tilt)).
+  var cs = getComputedStyle(world);
+  var TILT = parseFloat(cs.getPropertyValue("--tilt")) * Math.PI / 180;
+  var PERSP = parseFloat(cs.getPropertyValue("--persp"));
+  function toStage(clientX, clientY) {
+    var r = world.getBoundingClientRect();   // the world itself is not tilted, so this is the untilted box
+    var X = clientX - (r.left + r.width / 2), Y = clientY - (r.top + r.height / 2);
+    var sin = Math.sin(TILT), cos = Math.cos(TILT);
+    var y = Y * PERSP / (cos * PERSP + Y * sin);
+    var x = X * (PERSP - y * sin) / PERSP;
+    return { x: x + r.width / 2 - (r.width - stage.clientWidth) / 2, y: y + r.height / 2 };
   }
 
   function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
@@ -156,13 +199,13 @@
     notes.forEach(function (n, idx) {
       n.slot = null;
       if (idx === 0) {   // the headline note sits near the middle, on top, so it is always readable
-        n.x = (geo.stageW - geo.w) / 2 + (Math.random() - .5) * geo.w * .3;
+        n.x = (geo.stageW - geo.w) / 2 + (rand() - .5) * geo.w * .3;
         n.y = geo.messyTop + geo.messyH * .35;
         n.r = -4;
       } else {
-        n.x = Math.random() * (geo.stageW - geo.w);
-        n.y = geo.messyTop + Math.random() * geo.messyH;
-        n.r = Math.round((Math.random() * 18 - 9) * 10) / 10;
+        n.x = rand() * (geo.stageW - geo.w);
+        n.y = geo.messyTop + rand() * geo.messyH;
+        n.r = Math.round((rand() * 18 - 9) * 10) / 10;
       }
       raise(n);
       place(n, animate);
@@ -172,13 +215,16 @@
   }
 
   function tidyAll() {
+    var moved = 0;
     notes.forEach(function (n) {
       if (n.slot !== null) return;
       for (var i = 0; i < slots.length; i++) {
-        if (!slotTaken(i, n)) { snapTo(n, i, true); break; }
+        if (!slotTaken(i, n)) { snapTo(n, i, true); setTimeout(function () { sfx("snap"); }, moved * 90); moved += 1; break; }
       }
     });
+    winDelay = moved * 90 + 120;   // let the last snap land before the chime
     render();
+    winDelay = 120;
   }
 
   // ---- Wording that depends on progress ----
@@ -198,30 +244,34 @@
     toggle.textContent = done ? CONTENT.mess : CONTENT.tidy;
     headingEl.textContent = done ? CONTENT.headlineDone : CONTENT.headline;
     setBubble(done ? CONTENT.thanks : CONTENT.hello);
+    if (done && !wasDone) setTimeout(function () { sfx("win"); }, winDelay);
+    wasDone = done;
   }
 
   // ---- Dragging and keys ----
   function clearHot() { slots.forEach(function (s) { s.el.classList.remove("is-hot"); }); }
 
   function bindNote(n) {
-    var node = n.el, startX = 0, startY = 0, baseX = 0, baseY = 0, dragging = false;
+    var node = n.el, start = null, baseX = 0, baseY = 0, dragging = false;
 
     node.addEventListener("pointerdown", function (e) {
       if (e.button !== 0 || e.target.closest("a")) return;
       dragging = true;
-      startX = e.clientX; startY = e.clientY; baseX = n.x; baseY = n.y;
+      start = toStage(e.clientX, e.clientY); baseX = n.x; baseY = n.y;
       n.slot = null;
       node.classList.remove("is-snapping");
       node.classList.add("is-dragging");
       raise(n);
-      node.setPointerCapture(e.pointerId);
+      sfx("pick");
+      try { node.setPointerCapture(e.pointerId); } catch (err) { /* synthetic events: nothing to capture */ }
       render();
     });
 
     node.addEventListener("pointermove", function (e) {
       if (!dragging) return;
-      n.x = clamp(baseX + e.clientX - startX, 0, geo.stageW - geo.w);
-      n.y = clamp(baseY + e.clientY - startY, 0, geo.stageH - geo.h);
+      var p = toStage(e.clientX, e.clientY);
+      n.x = clamp(baseX + p.x - start.x, 0, geo.stageW - geo.w);
+      n.y = clamp(baseY + p.y - start.y, 0, geo.stageH - geo.h);
       place(n, false);
       clearHot();
       var near = nearestFree(n, SNAP_RATIO);
@@ -234,7 +284,7 @@
       node.classList.remove("is-dragging");
       clearHot();
       var near = nearestFree(n, SNAP_RATIO);
-      if (near >= 0) snapTo(n, near, true);
+      if (near >= 0) { snapTo(n, near, true); sfx("snap"); } else sfx("put");
       render();
     }
     node.addEventListener("pointerup", drop);
@@ -251,7 +301,7 @@
         e.preventDefault();
         if (n.slot !== null) return;
         var i = nearestFree(n);
-        if (i >= 0) { snapTo(n, i, true); render(); }
+        if (i >= 0) { snapTo(n, i, true); sfx("snap"); render(); }
         return;
       } else return;
       e.preventDefault();
@@ -266,7 +316,7 @@
 
   toggle.addEventListener("click", function () {
     var done = notes.every(function (n) { return n.slot !== null; });
-    if (done) messUp(true); else tidyAll();
+    if (done) { messUp(true); sfx("mess"); } else tidyAll();
   });
 
   // ---- Resize: outlines move, placed notes follow them, loose notes stay inside the board ----
@@ -285,23 +335,74 @@
     });
   });
 
+  // ---- Sound button (sounds are in holding-sound.js; default on, quiet, only in response to the visitor) ----
+  function showSound() {
+    var muted = window.HoldingSound ? window.HoldingSound.isMuted() : true;
+    soundBtn.textContent = muted ? CONTENT.soundOff : CONTENT.soundOn;
+    soundBtn.setAttribute("aria-pressed", muted ? "false" : "true");
+  }
+  if (window.HoldingSound && window.HoldingSound.supported) {
+    soundBtn.addEventListener("click", function () {
+      window.HoldingSound.setMuted(!window.HoldingSound.isMuted());
+      showSound();
+      sfx("put");   // a small confirmation when turned on (silent when turned off)
+    });
+    showSound();
+  } else {
+    soundBtn.hidden = true;
+  }
+
   // ---- Start ----
   measure();
   messUp(false);
 
   // The head pops up, then the bubble. With reduced motion everything appears at once.
-  function intro() {
-    avatar.hidden = false;
-    avatar.classList.add("is-up");
-    introDone = true;
-    setBubble(CONTENT.hello);
+  var introStarted = false;
+  function startIntro() {
+    if (introStarted) return;
+    introStarted = true;
+    if (reduced) {
+      avatar.hidden = false;
+      avatar.classList.add("is-up");
+      introDone = true;
+      setBubble(CONTENT.hello);
+      return;
+    }
+    setTimeout(function () {
+      avatar.hidden = false;
+      void avatar.offsetWidth;
+      avatar.classList.add("is-up");
+      bubble.parentNode.hidden = true;
+      setTimeout(function () { bubble.parentNode.hidden = false; introDone = true; setBubble(CONTENT.hello); }, 700);
+    }, 400);
   }
-  if (reduced) intro();
-  else setTimeout(function () {
-    avatar.hidden = false;
-    void avatar.offsetWidth;
-    avatar.classList.add("is-up");
-    bubble.parentNode.hidden = true;
-    setTimeout(function () { bubble.parentNode.hidden = false; introDone = true; setBubble(CONTENT.hello); }, 700);
-  }, 700);
+
+  // Welcome dialog: says what the page is, then offers the game. The avatar greets once it is closed.
+  // Shown on every visit (nothing is stored). Without <dialog> support the page simply starts.
+  var welcome = document.getElementById("welcome");
+  document.getElementById("welcome-tag").textContent = CONTENT.welcomeTag;
+  document.getElementById("welcome-title").textContent = CONTENT.welcomeTitle;
+  document.getElementById("welcome-text").textContent = CONTENT.welcomeText;
+  var goBtn = document.getElementById("welcome-go");
+  goBtn.textContent = CONTENT.welcomeGo;
+
+  if (share) {
+    if (welcome) welcome.hidden = true;
+    startIntro();
+  } else if (welcome && typeof welcome.showModal === "function") {
+    welcome.addEventListener("close", startIntro);
+    goBtn.addEventListener("click", function () {
+      welcome.close();
+      notes[0].el.focus({ preventScroll: true });   // lands on the headline note, ready to be moved
+    });
+    welcome.addEventListener("click", function (e) {   // a click on the backdrop closes it
+      var r = welcome.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) welcome.close();
+    });
+    welcome.showModal();
+    goBtn.focus();
+  } else {
+    if (welcome) welcome.hidden = true;
+    startIntro();
+  }
 })();
