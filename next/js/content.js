@@ -34,11 +34,11 @@ window.SITE = {
 
   contact: {
     email: "oluwaseyiadesigbin@gmail.com",
-    // "e164" is the dialling form used in tel:/wa.me links (digits after +, no spaces); "display" is what visitors read.
+    // "e164" is the dialling form used in tel: links (digits after +, no spaces); "display" is what visitors read.
     // The UK number was given as +44 07344 060334; the trunk "0" is dropped in international format.
+    // Only the UK number is shown. The Nigerian numbers were dropped and WhatsApp links removed (owner's decision).
     phones: [
-      { label: "Call and WhatsApp", display: "+44 7344 060334", e164: "+447344060334", call: true, whatsapp: true },
-      { label: "WhatsApp only", display: "+234 908 710 9453", e164: "+2349087109453", call: false, whatsapp: true }
+      { label: "Call", display: "+44 7344 060334", e164: "+447344060334", call: true, whatsapp: false }
     ],
     // Not linked on the old site either (href was empty). Add a path like "assets/resume.pdf" when ready.
     resume: null,
