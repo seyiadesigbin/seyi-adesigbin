@@ -12,16 +12,14 @@
 }
 
 /* Figure. The head's bottom edge is ragged (it is cut from a larger drawing), so it fades out instead of ending in a line. */
-.avatar-popup__figure { position: relative; flex: none; width: 80px; height: 112px; }
+.avatar-popup__figure { position: relative; flex: none; width: 88px; height: 100px; }
 
 /* Head: the source image is trimmed to the drawing (375 x 556), so it fills the frame with no crop offsets.
    If the image is replaced, set the aspect ratio to the new size and the width to taste. */
 .avatar-popup__head {
-  position: absolute; left: 4px; bottom: 0; width: 72px; aspect-ratio: 375 / 556; overflow: hidden;
+  position: absolute; left: 4px; bottom: 0; width: 80px; aspect-ratio: 136 / 171; overflow: hidden;
   transform: scale(.4); transform-origin: 50% 100%; opacity: 0;
   transition: transform .5s cubic-bezier(.2, 1.4, .4, 1), opacity .25s ease-out;
-  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
 }
 .avatar-popup__head img { display: block; width: 100%; height: auto; }
 .avatar-popup.is-up .avatar-popup__head { transform: none; opacity: 1; }

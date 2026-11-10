@@ -61,7 +61,7 @@
     figure.setAttribute("aria-hidden", "true");
     var headFrame = el("div", null, "avatar-popup__head");
     var img = document.createElement("img");
-    img.src = "assets/avatar.png"; img.alt = ""; img.width = 375; img.height = 556;
+    img.src = "assets/figure/head.png"; img.alt = ""; img.width = 136; img.height = 171;
     headFrame.appendChild(img);
     figure.appendChild(headFrame);
 
