@@ -24,6 +24,8 @@
     welcomeText: "Tidying the desk. Back soon.",
     welcomeGo: "Tidy the desk",
     welcomeLook: "Just looking",
+    soundOn: "Sound: on",
+    soundOff: "Sound: off",
     tidy: "Tidy up",
     mess: "Mess it up again",
     count: function (n, total) { return n + " of " + total + " tidied"; }
@@ -36,6 +38,7 @@
 
   var world = document.getElementById("world");
   var stage = document.getElementById("stage");
+  var soundBtn = document.getElementById("sound");
   var toggle = document.getElementById("toggle");
   var countEl = document.getElementById("count");
   var avatar = document.getElementById("avatar");
@@ -47,6 +50,19 @@
     if (className) n.className = className;
     return n;
   }
+
+  // "?share" (used once to take the share-preview picture, see README.md): fixed scatter, no bar, hint or dialog.
+  var share = /[?&]share\b/.test(location.search);
+  var seed = 23;
+  function rand() {
+    if (!share) return Math.random();
+    seed = (seed * 16807) % 2147483647;   // small seeded generator so the picture is repeatable
+    return (seed - 1) / 2147483646;
+  }
+  if (share) document.body.classList.add("share");
+
+  function sfx(name) { if (window.HoldingSound) window.HoldingSound.play(name); }
+  var winDelay = 120, wasDone = false;
 
   var notes = [];   // { el, x, y, r, slot }  slot is an outline index or null
   var slots = [];   // { el, x, y }
@@ -184,13 +200,13 @@
     notes.forEach(function (n, idx) {
       n.slot = null;
       if (idx === 0) {   // the headline note sits near the middle, on top, so it is always readable
-        n.x = (geo.stageW - geo.w) / 2 + (Math.random() - .5) * geo.w * .3;
+        n.x = (geo.stageW - geo.w) / 2 + (rand() - .5) * geo.w * .3;
         n.y = geo.messyTop + geo.messyH * .35;
         n.r = -4;
       } else {
-        n.x = Math.random() * (geo.stageW - geo.w);
-        n.y = geo.messyTop + Math.random() * geo.messyH;
-        n.r = Math.round((Math.random() * 18 - 9) * 10) / 10;
+        n.x = rand() * (geo.stageW - geo.w);
+        n.y = geo.messyTop + rand() * geo.messyH;
+        n.r = Math.round((rand() * 18 - 9) * 10) / 10;
       }
       raise(n);
       place(n, animate);
@@ -200,13 +216,16 @@
   }
 
   function tidyAll() {
+    var moved = 0;
     notes.forEach(function (n) {
       if (n.slot !== null) return;
       for (var i = 0; i < slots.length; i++) {
-        if (!slotTaken(i, n)) { snapTo(n, i, true); break; }
+        if (!slotTaken(i, n)) { snapTo(n, i, true); setTimeout(function () { sfx("snap"); }, moved * 90); moved += 1; break; }
       }
     });
+    winDelay = moved * 90 + 120;   // let the last snap land before the chime
     render();
+    winDelay = 120;
   }
 
   // ---- Wording that depends on progress ----
@@ -226,6 +245,8 @@
     toggle.textContent = done ? CONTENT.mess : CONTENT.tidy;
     headingEl.textContent = done ? CONTENT.headlineDone : CONTENT.headline;
     setBubble(done ? CONTENT.thanks : CONTENT.hello);
+    if (done && !wasDone) setTimeout(function () { sfx("win"); }, winDelay);
+    wasDone = done;
   }
 
   // ---- Dragging and keys ----
@@ -242,6 +263,7 @@
       node.classList.remove("is-snapping");
       node.classList.add("is-dragging");
       raise(n);
+      sfx("pick");
       try { node.setPointerCapture(e.pointerId); } catch (err) { /* synthetic events: nothing to capture */ }
       render();
     });
@@ -263,7 +285,7 @@
       node.classList.remove("is-dragging");
       clearHot();
       var near = nearestFree(n, SNAP_RATIO);
-      if (near >= 0) snapTo(n, near, true);
+      if (near >= 0) { snapTo(n, near, true); sfx("snap"); } else sfx("put");
       render();
     }
     node.addEventListener("pointerup", drop);
@@ -280,7 +302,7 @@
         e.preventDefault();
         if (n.slot !== null) return;
         var i = nearestFree(n);
-        if (i >= 0) { snapTo(n, i, true); render(); }
+        if (i >= 0) { snapTo(n, i, true); sfx("snap"); render(); }
         return;
       } else return;
       e.preventDefault();
@@ -295,7 +317,7 @@
 
   toggle.addEventListener("click", function () {
     var done = notes.every(function (n) { return n.slot !== null; });
-    if (done) messUp(true); else tidyAll();
+    if (done) { messUp(true); sfx("mess"); } else tidyAll();
   });
 
   // ---- Resize: outlines move, placed notes follow them, loose notes stay inside the board ----
@@ -313,6 +335,23 @@
       });
     });
   });
+
+  // ---- Sound button (sounds are in holding-sound.js; default on, quiet, only in response to the visitor) ----
+  function showSound() {
+    var muted = window.HoldingSound ? window.HoldingSound.isMuted() : true;
+    soundBtn.textContent = muted ? CONTENT.soundOff : CONTENT.soundOn;
+    soundBtn.setAttribute("aria-pressed", muted ? "false" : "true");
+  }
+  if (window.HoldingSound && window.HoldingSound.supported) {
+    soundBtn.addEventListener("click", function () {
+      window.HoldingSound.setMuted(!window.HoldingSound.isMuted());
+      showSound();
+      sfx("put");   // a small confirmation when turned on (silent when turned off)
+    });
+    showSound();
+  } else {
+    soundBtn.hidden = true;
+  }
 
   // ---- Start ----
   measure();
@@ -349,7 +388,10 @@
   goBtn.textContent = CONTENT.welcomeGo;
   lookBtn.textContent = CONTENT.welcomeLook;
 
-  if (welcome && typeof welcome.showModal === "function") {
+  if (share) {
+    if (welcome) welcome.hidden = true;
+    startIntro();
+  } else if (welcome && typeof welcome.showModal === "function") {
     welcome.addEventListener("close", startIntro);
     lookBtn.addEventListener("click", function () { welcome.close(); });
     goBtn.addEventListener("click", function () {

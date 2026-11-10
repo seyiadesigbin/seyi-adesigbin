@@ -76,7 +76,7 @@ Agreed, not built:
   career-hub data (months, refined role text).
 - **Resume PDF**, real tool weights, domain confirmation for share-preview URLs: waiting on the maintainer.
 - **Holding page 3D** (`feature/holding-3d`, in review): `holding/` (merged in #21, served by Cloudflare until the swap, planned around the end of December 2026) gets a 3D tilted desk, a welcome dialog and a Bible object with "John 3:16". Its wording lives in `holding/holding.js`, separate from `next/`. If the look works, the maintainer may restyle the Desk view to match, and may deploy the Report first; neither is decided.
-- **The swap change**, last: DNS, `CNAME`, hosting. Steps are in `holding/SWAP.md`; remove `holding/` and `docs/holding-og-source.html` afterwards. Stay on GitHub Pages with a public repo unless the maintainer decides
+- **The swap change**, last: DNS, `CNAME`, hosting. Steps are in `holding/SWAP.md`; remove `holding/` afterwards. Stay on GitHub Pages with a public repo unless the maintainer decides
   otherwise.
 
 Not yet seen in a real browser: the section-menu button's narrow-window fallback (bottom-left), phone widths, dragging,

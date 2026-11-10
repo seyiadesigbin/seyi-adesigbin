@@ -61,4 +61,4 @@ restore the records noted before the day. The holding page then serves again.
 
 ## After the swap
 
-Remove the `holding/` folder and `docs/holding-og-source.html` in a separate change, and delete the Cloudflare project.
+Remove the `holding/` folder in a separate change, and delete the Cloudflare project.

@@ -19,7 +19,9 @@ the avatar head are copies of the files in `next/assets`, so this folder deploys
 | `holding.js` | The game and all wording (the `CONTENT` object at the top). Also turns pointer positions into positions on the tilted desk |
 | `holding-3d.js` | Gives the desk objects thickness and shadows, drops them in, and moves the lamplight with the pointer |
 | `assets/` | Fonts (with their OFL licences), `head.png`, and `desk/*.svg` (the drawn desk objects: laptop, mouse, notebook, pen, pencil, books, phone, Bible, mug, plant, desk mat) |
-| `og-image.png` | 1200x630 share-preview card, built from `docs/holding-og-source.html` |
+| `holding-sound.js` | Small synthesised sound effects (Web Audio, no audio files) and the mute switch |
+| `og-image.png` | 1200x630 share-preview card: a screenshot of this page opened as `index.html?share` |
+| `favicon.png`, `apple-touch-icon.png` | Tab and home-screen icons, cropped from the avatar head |
 | `SWAP.md` | Steps for moving the domain from Cloudflare to GitHub Pages |
 
 ## Deploy (Cloudflare)
@@ -32,6 +34,8 @@ as the custom domain. Do not add a `CNAME` file; that belongs to the swap change
 - `node --check holding/*.js` (also run by CI).
 - The desk is a tilted plane in perspective: `--tilt` and `--persp` in `holding.css` (`.world`) are read by `holding.js` to undo the tilt when dragging. Change them there only.
 - Screenshots with headless Edge, as described in the root `CLAUDE.md`, open `holding/index.html`.
-- Regenerate the share image: open `docs/holding-og-source.html` in headless Edge with `--window-size=1200,630`
+- Regenerate the share image: open `holding/index.html?share` in headless Edge with `--window-size=1200,630` and `--screenshot=holding/og-image.png` (the `%20` form of the path is needed if it contains spaces). `?share` hides the controls and the dialog and fixes the note scatter (seed in `holding.js`).
   `--screenshot=holding/og-image.png`.
+- Sounds are not heard by any check here: only that each one runs without error and the mute switch changes state.
+- The page carries `noindex`, so search engines skip it. The real site must not copy that tag.
 - Not checkable headlessly: dragging, keyboard use and touch. Try them in a real browser on a laptop and a phone.

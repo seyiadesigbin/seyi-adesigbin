@@ -17,7 +17,9 @@
   <meta property="og:image:alt" content="A dark desk covered in untidy sticky notes. The yellow one reads: Tidying the desk. Back soon.">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="icon" href="data:,">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="stylesheet" href="holding.css">
 </head>
 <body>
@@ -25,6 +27,7 @@
 
   <header class="bar">
     <button type="button" class="bar__btn" id="toggle">Tidy up</button>
+    <button type="button" class="bar__btn bar__btn--quiet" id="sound" aria-pressed="true">Sound: on</button>
     <p class="bar__count" id="count" aria-live="polite">0 of 5 tidied</p>
   </header>
 
@@ -73,6 +76,7 @@
   </aside>
 
   <noscript><p class="nojs">Seyi Adesigbin. Tidying the desk. Back soon.</p></noscript>
+  <script src="holding-sound.js"></script>
   <script src="holding.js"></script>
   <script src="holding-3d.js"></script>
 </body>
