@@ -7,7 +7,7 @@
  */
 (function () {
   var CONTENT = {
-    headline: "Tidying the desk.",
+    headline: "Tidying my desk.",
     headlineDone: "Desk tidied.",
     sub: "Back soon.",
     name: "Seyi Adesigbin",
@@ -21,7 +21,7 @@
     thanks: "Thank you! This looks much better!",
     welcomeTag: "Coming soon",
     welcomeTitle: "Seyi Adesigbin",
-    welcomeText: "Tidying the desk. Back soon.",
+    welcomeText: "Tidying my desk. Back soon.",
     welcomeGo: "Tidy the desk",
     welcomeLook: "Just looking",
     soundOn: "Sound: on",
