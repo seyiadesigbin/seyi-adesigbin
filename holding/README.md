@@ -15,7 +15,7 @@ the avatar head are copies of the files in `next/assets`, so this folder deploys
 | `index.html` | Page shell, share-preview tags (`og:*`) |
 | `holding.css` | Styles. Colour tokens are copied from `next/css/tokens.css` |
 | `holding.js` | The game and all wording (the `CONTENT` object at the top) |
-| `assets/` | Fonts (with their OFL licences) and `head.png` |
+| `assets/` | Fonts (with their OFL licences), `head.png`, and `desk/*.svg` (the drawn desk objects: laptop, mouse, notebook, pen, pencil, books, phone, mug, plant) |
 | `og-image.png` | 1200x630 share-preview card, built from `docs/holding-og-source.html` |
 | `SWAP.md` | Steps for moving the domain from Cloudflare to GitHub Pages |
 

@@ -29,8 +29,11 @@ body {
   min-height: 100vh; color: #fff;
   font: 16px/1.5 var(--font-body);
   background-color: var(--desk-bg);
-  background-image: radial-gradient(rgba(255, 255, 255, .09) 1.5px, transparent 1.5px);
-  background-size: 26px 26px;
+  /* lamplight from the top-left, then the dot grid */
+  background-image: radial-gradient(ellipse 60% 100% at 12% 0%, rgba(255, 216, 77, .13), transparent 70%),
+                    radial-gradient(rgba(255, 255, 255, .09) 1.5px, transparent 1.5px);
+  background-size: 100% 700px, 26px 26px;
+  background-repeat: no-repeat, repeat;
   overflow-x: hidden;
 }
 
@@ -46,11 +49,11 @@ body {
 .bar__btn:focus-visible, .note:focus-visible, .note a:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 .bar__count { font: 500 12px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: #cfcfcf; }
 
-main { padding: 0 24px 160px; }
-.hint { max-width: 640px; margin: 0 auto 24px; text-align: center; color: #cfcfcf; font: 500 13px/1.5 var(--font-mono); }
+main { position: relative; overflow: hidden; padding: 0 24px 160px; }
+.hint { position: relative; z-index: 1; max-width: 640px; margin: 0 auto 24px; text-align: center; color: #cfcfcf; font: 500 13px/1.5 var(--font-mono); }
 
 /* The board. Notes and outlines are placed by holding.js (it sets the stage height). */
-.stage { position: relative; max-width: 1100px; margin: 0 auto; }
+.stage { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
 
 .slot {
   position: absolute; border: 2px dashed rgba(255, 255, 255, .28); border-radius: 4px;
@@ -123,4 +126,33 @@ main { padding: 0 24px 160px; }
 @media (prefers-reduced-motion: reduce) {
   .note.is-snapping, .slot, .avatar__head { transition: none; }
   .avatar__bubble.is-in { animation: none; }
+}
+
+/*
+ * The desk: drawn objects (assets/desk/*.svg) lie behind the notes. They are placed from the centre line
+ * (left: 50% + x) so they stay with the board; at narrower widths some are hidden and the rest move in.
+ */
+.scene { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.obj { position: absolute; height: auto; filter: drop-shadow(0 12px 16px rgba(0, 0, 0, .5)); }
+.obj--laptop   { left: calc(50% - 540px); top: 270px; width: 500px; transform: rotate(-2deg); }
+.obj--mouse    { left: calc(50% + 10px);  top: 300px; width: 64px;  transform: rotate(12deg); }
+.obj--notebook { left: calc(50% + 110px); top: 400px; width: 320px; transform: rotate(3deg); }
+.obj--pen      { left: calc(50% + 170px); top: 440px; width: 190px; transform: rotate(-22deg); }
+.obj--books    { left: calc(50% + 360px); top: 240px; width: 210px; transform: rotate(4deg); }
+.obj--pencil   { left: calc(50% - 300px); top: 650px; width: 190px; transform: rotate(-6deg); }
+.obj--phone    { left: calc(50% - 60px);  top: 620px; width: 62px;  transform: rotate(-14deg); }
+.obj--mug      { left: calc(50% + 520px); top: 40px;  width: 100px; }
+.obj--plant    { left: calc(50% - 650px); top: 50px;  width: 150px; transform: rotate(10deg); }
+
+@media (max-width: 1100px) {
+  .obj--notebook, .obj--books, .obj--pencil, .obj--phone, .obj--plant { display: none; }
+  .obj--laptop { left: calc(50% - 300px); top: 400px; width: 420px; }
+  .obj--mouse  { left: calc(50% + 150px); top: 440px; width: 56px; }
+  .obj--pen    { left: calc(50% + 110px); top: 560px; width: 150px; }
+  .obj--mug    { left: calc(50% + 190px); top: 330px; width: 84px; }
+}
+@media (max-width: 700px) {
+  .obj--mouse, .obj--pen { display: none; }
+  .obj--laptop { left: calc(50% - 170px); top: 480px; width: 340px; }
+  .obj--mug    { left: calc(50% + 100px); top: 440px; width: 70px; }
 }
