@@ -42,8 +42,8 @@
 .avatar-figure--walk.is-walking .fig-arm-f { animation: walk-arm-b .6s ease-in-out infinite alternate-reverse; }
 .avatar-figure--walk.is-walking .fig-head { animation: fig-nod .6s ease-in-out infinite alternate; }
 
-@keyframes walk-leg-f { from { transform: rotate(-9deg); } to { transform: rotate(9deg); } }
-@keyframes walk-arm-b { from { transform: rotate(-16deg); } to { transform: rotate(16deg); } }
+@keyframes walk-leg-f { from { transform: rotate(-15deg); } to { transform: rotate(15deg); } }
+@keyframes walk-arm-b { from { transform: rotate(-26deg); } to { transform: rotate(26deg); } }
 
 @media (prefers-reduced-motion: reduce) {
   .avatar-figure.is-running, .avatar-figure.is-running .fig-part,

@@ -1,5 +1,5 @@
 /*
- * The animated strip above the Report timeline. The avatar moves along the years and stops at today. Nothing
+ * The animated strip above the Report timeline. The avatar walks along the years, then stops at today and faces you. Nothing
  * is typed in here: the year range comes from window.SITE.experience, so editing content.js moves everything.
  *
  *   TimelineRunner.create(site, firstYear, yearCount)  ->  an element to put above the year axis
@@ -42,12 +42,18 @@
     var pNow = frac(nowYear, first, n);
 
     var actor = el("div", "runner-actor");
+    // Side view while walking, front view (facing you) when standing still.
     var figure = window.AvatarFigure ? window.AvatarFigure.create("walk") : null;
+    var facing = window.AvatarFigure ? window.AvatarFigure.create() : null;
+    if (facing) actor.appendChild(facing);
     if (figure) actor.appendChild(figure);
     track.appendChild(actor);
 
-    function stand(left) { actor.style.left = pct(left); if (figure) figure.classList.remove("is-walking"); }
-    function setRun(on) { if (figure) figure.classList.toggle("is-walking", on); }
+    function stand(left) { actor.style.left = pct(left); setRun(false); }
+    function setRun(on) {
+      actor.classList.toggle("is-walking-now", on);
+      if (figure) figure.classList.toggle("is-walking", on);
+    }
 
     var running = [];
     var token = 0;
