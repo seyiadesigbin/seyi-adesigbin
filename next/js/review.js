@@ -117,6 +117,7 @@
     box.appendChild(ta);
     box.appendChild(row);
     document.body.appendChild(box);
+    ui.editor = box;
     var x = note ? parseFloat(pins[note.id].style.left) - window.scrollX : draft.clientX;
     var y = note ? parseFloat(pins[note.id].style.top) - window.scrollY : draft.clientY;
     box.style.left = Math.max(8, Math.min(x + 12, window.innerWidth - 280)) + "px";
