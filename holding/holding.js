@@ -23,7 +23,6 @@
     welcomeTitle: "Seyi Adesigbin",
     welcomeText: "Tidying my desk. Back soon.",
     welcomeGo: "Tidy the desk",
-    welcomeLook: "Just looking",
     soundOn: "Sound: on",
     soundOff: "Sound: off",
     tidy: "Tidy up",
@@ -384,16 +383,14 @@
   document.getElementById("welcome-tag").textContent = CONTENT.welcomeTag;
   document.getElementById("welcome-title").textContent = CONTENT.welcomeTitle;
   document.getElementById("welcome-text").textContent = CONTENT.welcomeText;
-  var goBtn = document.getElementById("welcome-go"), lookBtn = document.getElementById("welcome-look");
+  var goBtn = document.getElementById("welcome-go");
   goBtn.textContent = CONTENT.welcomeGo;
-  lookBtn.textContent = CONTENT.welcomeLook;
 
   if (share) {
     if (welcome) welcome.hidden = true;
     startIntro();
   } else if (welcome && typeof welcome.showModal === "function") {
     welcome.addEventListener("close", startIntro);
-    lookBtn.addEventListener("click", function () { welcome.close(); });
     goBtn.addEventListener("click", function () {
       welcome.close();
       notes[0].el.focus({ preventScroll: true });   // lands on the headline note, ready to be moved
