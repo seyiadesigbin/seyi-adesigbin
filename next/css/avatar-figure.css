@@ -1,0 +1,51 @@
+/* The standing avatar figure (see js/avatar-figure.js). */
+.avatar-figure {
+  --fig-head-scale: .8;           /* 1 = head as drawn; smaller values shrink it from the neck */
+  --fig-halo: none;               /* set to a light drop-shadow for use on a dark background */
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: var(--fig-halo);
+}
+
+/* Each part turns around its own pivot, which the script sets in the figure's units. */
+.avatar-figure .fig-part { transform-box: view-box; }
+.avatar-figure .fig-head { transform: scale(var(--fig-head-scale)); }
+
+/*
+ * Run cycle (add the class "is-running" to the figure). The arms swing from the shoulders, the legs lift
+ * straight up under the shirt hem (they never rotate, which would show a kink at the hips), and the whole
+ * figure bobs. Opposite arms and legs move in opposite directions.
+ */
+.avatar-figure.is-running { animation: fig-bob .2s ease-in-out infinite alternate; }
+.avatar-figure.is-running .fig-arm-l { animation: fig-arm .4s ease-in-out infinite alternate; }
+.avatar-figure.is-running .fig-arm-r { animation: fig-arm .4s ease-in-out infinite alternate-reverse; }
+.avatar-figure.is-running .fig-leg-l { animation: fig-lift .4s ease-in-out infinite alternate; }
+.avatar-figure.is-running .fig-leg-r { animation: fig-lift .4s ease-in-out infinite alternate-reverse; }
+.avatar-figure.is-running .fig-head { animation: fig-nod .4s ease-in-out infinite alternate; }
+
+@keyframes fig-bob { from { transform: translateY(0); } to { transform: translateY(-5px); } }
+@keyframes fig-arm { from { transform: rotate(-20deg); } to { transform: rotate(20deg); } }
+@keyframes fig-lift { from { transform: translateY(0); } to { transform: translateY(-24px); } }
+@keyframes fig-nod { from { transform: scale(var(--fig-head-scale)) rotate(-2deg); } to { transform: scale(var(--fig-head-scale)) rotate(2deg); } }
+
+/*
+ * Walk cycle for the side view (add "is-walking"). Legs and arms swing from the hips and shoulders, opposite
+ * arm and leg together. Turning is clockwise, so a negative angle swings a limb forward (to the right).
+ */
+.avatar-figure--walk { --fig-head-scale: 1; }
+.avatar-figure--walk.is-walking { animation: fig-bob .3s ease-in-out infinite alternate; }
+.avatar-figure--walk.is-walking .fig-leg-f { animation: walk-leg-f .6s ease-in-out infinite alternate; }
+.avatar-figure--walk.is-walking .fig-leg-b { animation: walk-leg-f .6s ease-in-out infinite alternate-reverse; }
+.avatar-figure--walk.is-walking .fig-arm-b { animation: walk-arm-b .6s ease-in-out infinite alternate; }
+.avatar-figure--walk.is-walking .fig-arm-f { animation: walk-arm-b .6s ease-in-out infinite alternate-reverse; }
+.avatar-figure--walk.is-walking .fig-head { animation: fig-nod .6s ease-in-out infinite alternate; }
+
+@keyframes walk-leg-f { from { transform: rotate(-15deg); } to { transform: rotate(15deg); } }
+@keyframes walk-arm-b { from { transform: rotate(-26deg); } to { transform: rotate(26deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-figure.is-running, .avatar-figure.is-running .fig-part,
+  .avatar-figure.is-walking, .avatar-figure.is-walking .fig-part { animation: none; }
+}

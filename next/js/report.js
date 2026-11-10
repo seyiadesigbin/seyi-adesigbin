@@ -109,6 +109,8 @@
     var axis = el("div", "axis mono");
     axis.appendChild(el("span"));
     for (var y = first; y <= last; y++) axis.appendChild(el("span", null, String(y)));
+    // The avatar's running strip sits above the years. Skipped if its scripts are not loaded.
+    if (window.TimelineRunner) chart.appendChild(window.TimelineRunner.create(site, first, n));
     chart.appendChild(axis);
 
     site.experience.forEach(function (x, i) {
@@ -119,9 +121,19 @@
       var detailId = "role-" + i;
       btn.setAttribute("aria-controls", detailId);
 
+      // Job title first, then the organisation, then where it was and when (what a recruiter scans for).
       var who = el("span", "who");
-      who.appendChild(el("b", null, x.org));
-      who.appendChild(el("small", null, x.role));
+      who.appendChild(el("b", null, x.role));
+      who.appendChild(el("small", null, x.org));
+      var meta = el("span", "who-meta");
+      var where = el("span", "who-place");
+      var flag = window.Flags && x.country ? window.Flags.create(x.country) : null;
+      if (flag) where.appendChild(flag);
+      if (x.place) where.appendChild(el("span", null, x.place));
+      if (x.kind) where.appendChild(el("span", "kind mono", x.kind));
+      if (where.childNodes.length) meta.appendChild(where);
+      meta.appendChild(el("span", "years mono", x.start === x.end ? String(x.start) : x.start + " - " + x.end));
+      who.appendChild(meta);
       btn.appendChild(who);
 
       var track = el("span", "track");
@@ -193,7 +205,7 @@
 
     (c.phones || []).forEach(function (ph) {
       var v = row(ph.label);
-      v.appendChild(document.createTextNode(ph.display + " "));
+      if (ph.showNumber !== false) v.appendChild(document.createTextNode(ph.display + " "));
       var icons = el("span", "icon-links");
       if (ph.call) icons.appendChild(window.Icons.link("call", "tel:" + ph.e164, "Call " + ph.display));
       if (ph.whatsapp) icons.appendChild(window.Icons.link("whatsapp", "https://wa.me/" + ph.e164.replace("+", ""), "WhatsApp " + ph.display, true));
@@ -208,9 +220,12 @@
 
     if (c.resume) row("Resume").appendChild(link(c.resume, "Download my resume"));
 
-    s.appendChild(ul);
+    // The links and the form sit side by side on wide screens (see .contact-grid in report.css).
+    var grid = el("div", "contact-grid");
+    grid.appendChild(ul);
     var form = window.ContactForm && window.ContactForm.create(site);
-    if (form) s.appendChild(form);
+    if (form) grid.appendChild(form);
+    s.appendChild(grid);
     return s;
   }
 
@@ -220,13 +235,11 @@
     head.appendChild(el("span", null, site.name + " / Report"));
     var nav = el("nav");
     nav.setAttribute("aria-label", "Report sections");
+    // Scroll without changing the address, so the URL stays #report.
+    function jump(id) { document.getElementById(id).scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth" }); }
     [["figures", "Fig.1"], ["timeline", "Fig.2"], ["expertise", "Fig.3"], ["toolkit", "Fig.4"], ["contact", "Contact"]].forEach(function (p) {
       var a = link("#" + p[0], p[1]);
-      // Scroll without changing the address, so the URL stays #report.
-      a.addEventListener("click", function (e) {
-        e.preventDefault();
-        document.getElementById(p[0]).scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth" });
-      });
+      a.addEventListener("click", function (e) { e.preventDefault(); jump(p[0]); });
       nav.appendChild(a);
     });
     head.appendChild(nav);
@@ -239,6 +252,13 @@
     root.appendChild(toolkit());
     root.appendChild(contact());
     root.appendChild(el("footer", "mono r-foot", "(c) " + site.name));
+    // A floating, draggable menu to jump between sections once the header has scrolled away.
+    if (window.SectionMenu) {
+      root.appendChild(window.SectionMenu.create([
+        { id: "figures", label: "Key figures" }, { id: "timeline", label: "Career timeline" },
+        { id: "expertise", label: "Expertise" }, { id: "toolkit", label: "Toolkit" }, { id: "contact", label: "Contact" }
+      ], jump));
+    }
   }
 
   window.Report = { mount: mount };

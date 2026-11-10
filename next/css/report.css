@@ -19,6 +19,9 @@ body[data-view="report"] {
 .r-top nav a { margin-right: 22px; text-decoration: none; }
 .r-top nav a:hover { color: var(--report-accent); }
 
+/* Contact: links and form side by side, one under the other on narrower screens. */
+@media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+
 /* Hero */
 .r-hero { display: grid; grid-template-columns: 1.3fr 1fr; gap: 30px; padding: 60px 0 40px; align-items: end; }
 .r-hero h1 { font-size: clamp(52px, 7.4vw, 104px); line-height: .9; letter-spacing: -.025em; font-weight: 700; margin-top: 18px; }
@@ -58,7 +61,12 @@ body[data-view="report"] {
 .rowg-btn:focus-visible { outline: 3px solid var(--report-blue); outline-offset: 2px; }
 .who { padding-right: 14px; }
 .who b { display: block; font-size: 14px; line-height: 1.2; }
-.who small { color: #555; font-size: 13px; }
+.who small { color: #555; font-size: 13px; line-height: 1.25; display: block; }
+.who-meta { display: block; margin-top: 3px; font-size: 12px; color: #333; }
+.who-place { display: flex; align-items: center; gap: 6px; }
+.who-meta .years { display: block; margin-top: 1px; font-size: 11px; color: #666; }
+.who-meta .flag { width: 20px; height: 13px; border: 1px solid var(--report-ink); flex: none; }
+.who-meta .kind { border: 1px solid var(--report-ink); border-radius: 999px; padding: 0 6px; text-transform: uppercase; letter-spacing: .06em; font-size: 10px; }
 .track { position: relative; display: block; height: 30px; }
 .bar { position: absolute; top: 0; height: 30px; background: var(--report-blue); transition: background .2s, top .2s, height .2s; }
 .rowg-btn:hover .bar, .rowg.open .bar { background: var(--report-accent); top: -2px; height: 34px; }
@@ -80,7 +88,8 @@ body[data-view="report"] {
 .b-3 { font-size: 30px; padding: 16px 34px; background: var(--report-blue); color: #fff; border-color: var(--report-blue); }
 
 /* Contact */
-.contact-list { list-style: none; padding: 0; max-width: 640px; border: 2px solid var(--report-ink); background: rgba(255, 255, 255, .5); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+.contact-list { list-style: none; padding: 0; margin: 0; border: 2px solid var(--report-ink); background: rgba(255, 255, 255, .5); }
 .contact-list li { display: grid; grid-template-columns: 150px 1fr; gap: 12px; padding: 14px 18px; border-bottom: 2px solid var(--report-ink); align-items: baseline; }
 .contact-list li:last-child { border-bottom: 0; }
 .contact-list a { font-weight: 700; }
@@ -96,8 +105,15 @@ body[data-view="report"] {
   .r-hero { grid-template-columns: 1fr; }
   .r-tag-1 { left: 0; }
   .gantt { --label: 120px; padding: 12px 10px 4px; }
+  .axis span { padding-left: 3px; font-size: 10px; letter-spacing: -.02em; overflow: hidden; }
   .who b { font-size: 12px; }
   .who small { font-size: 11px; }
+  .who-meta { font-size: 11px; }
+  .who-meta .years { font-size: 10px; }
+  .who-meta .flag { width: 16px; height: 11px; }
   .detail p { padding-left: 0; }
   .contact-list li { grid-template-columns: 1fr; gap: 2px; }
 }
+
+/* Jumping to a section (header links or the floating menu) leaves a little space above it instead of sitting flush at the top. */
+#figures, #timeline, #expertise, #toolkit, #contact { scroll-margin-top: 24px; }

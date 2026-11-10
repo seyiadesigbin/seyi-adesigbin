@@ -23,6 +23,7 @@
     exp2:     [320, 770, -3],
     exp3:     [610, 710, 2],
     exp4:     [905, 750, -4],
+    exp5:     [900, 470, 3],
     skill0:   [40, 1110, -3],
     skill1:   [340, 1150, 2],
     skill2:   [640, 1110, -2],
@@ -143,7 +144,7 @@
 
     (c.phones || []).forEach(function (ph) {
       var row = el("li");
-      row.appendChild(document.createTextNode(ph.label + ": " + ph.display + " "));
+      row.appendChild(document.createTextNode(ph.label + (ph.showNumber === false ? " " : ": " + ph.display + " ")));
       var icons = el("span", "icon-links");
       if (ph.call) icons.appendChild(window.Icons.link("call", "tel:" + ph.e164, "Call " + ph.display));
       if (ph.whatsapp) icons.appendChild(window.Icons.link("whatsapp", "https://wa.me/" + ph.e164.replace("+", ""), "WhatsApp " + ph.display, true));
