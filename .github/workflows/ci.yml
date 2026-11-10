@@ -21,6 +21,15 @@ jobs:
             echo "node --check $f"
             node --check "$f"
           done
+      - name: Syntax-check the holding page script
+        run: node --check holding/holding.js
+      - name: Check that local files referenced by holding/index.html exist
+        run: |
+          missing=0
+          for ref in $(grep -oE '(src|href)="[^"#?]+"' holding/index.html | sed -E 's/^[a-z]+="//; s/"$//' | grep -vE '^(https?:|mailto:|tel:|data:)'); do
+            if [ ! -e "holding/$ref" ]; then echo "missing: holding/$ref"; missing=1; fi
+          done
+          exit $missing
       - name: Check that local files referenced by next/index.html exist
         run: |
           missing=0

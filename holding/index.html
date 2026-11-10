@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seyi Adesigbin | Coming soon</title>
+  <meta name="description" content="Tidying the desk. Back soon.">
+  <meta name="theme-color" content="#1b1b1f">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Seyi Adesigbin | Coming soon">
+  <meta property="og:description" content="Tidying the desk. Back soon.">
+  <meta property="og:url" content="https://seyiadesigbin.com/">
+  <meta property="og:image" content="https://seyiadesigbin.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A dark desk covered in untidy sticky notes. The yellow one reads: Tidying the desk. Back soon.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="holding.css">
+</head>
+<body>
+  <a class="skip-link" href="#stage">Skip to the notes</a>
+
+  <header class="bar">
+    <button type="button" class="bar__btn" id="toggle">Tidy up</button>
+    <p class="bar__count" id="count" aria-live="polite">0 of 5 tidied</p>
+  </header>
+
+  <main>
+    <p class="hint" id="hint">Drag each note into an outline. With a keyboard, focus a note, move it with the arrow keys, then press Enter to snap it into the nearest outline.</p>
+    <div class="stage" id="stage"></div>
+  </main>
+
+  <!-- The head pops up bottom-right, then one speech bubble. Wording is set in holding.js (the CONTENT object). -->
+  <aside class="avatar" id="avatar" hidden>
+    <div class="avatar__talk" aria-live="polite"><p class="avatar__bubble" id="bubble"></p></div>
+    <div class="avatar__head"><img src="assets/head.png" alt="" width="136" height="171"></div>
+  </aside>
+
+  <noscript><p class="nojs">Seyi Adesigbin. Tidying the desk. Back soon.</p></noscript>
+  <script src="holding.js"></script>
+</body>
+</html>
