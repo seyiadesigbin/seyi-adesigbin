@@ -55,7 +55,27 @@ See `README.md` for the file map. Key points:
 
 ## Roadmap
 
-Next: the avatar pop-up (the owner has an Illustrator `.ai` face drawing; try `pdftocairo -svg` on a copy, else ask for an SVG
-export with the head on its own layer; never alter the original), an optional animated career timeline (avatar runs
-through the roles and becomes a plane at the move to the UK; needs the year), real fonts, resume PDF, share-preview
-tags and sitemap, and finally the swap change.
+This is the one tracking list for agreed work. Rule: when a feature or task is agreed in chat, add it here in the same
+change, and remove it when it is merged. Every handover lists everything below, not only open pull requests.
+
+Done and merged (do not redo): avatar pop-up, animated career timeline, self-hosted fonts, share-preview tags, sitemap
+and robots.
+
+Agreed, not built:
+- **Review notes** (`feature/review-notes`): a review mode switched on by `?review` in the address. Click anything, type
+  a note, and a pin appears. Notes are kept in the browser (`localStorage`); an Export button copies them with the page,
+  view (Desk or Report), screen width and element name. One file, `next/js/review.js`, loaded only with `?review`. Pins
+  must survive Desk re-layout. No server, no database. Owner reviews in Chrome profile "Profile 2" through a Desktop
+  shortcut.
+- **Headline rewrite** (`feature/headline-problem-solver`): the hero headline, lead text, ANALYST tag, Expertise "Data
+  Analysis" card and share-preview text should not lead with "Data Analysis"; the owner wants to come across as a
+  problem solver. Ask for wording and facts; do not invent them.
+- **Timeline changes**: show roles within each year, a country flag per role (all Nigeria except Heriot-Watt, UK
+  Scotland), keep recruiter-useful facts (title, dates, place) readable at a glance. Job details wait for the owner's
+  career-hub data (months, refined role text).
+- **Resume PDF**, real tool weights, domain confirmation for share-preview URLs: waiting on the owner.
+- **The swap change**, last: DNS, `CNAME`, hosting. Stay on GitHub Pages with a public repo unless the owner decides
+  otherwise.
+
+Not yet seen in a real browser: the section-menu button's narrow-window fallback (bottom-left), phone widths, dragging,
+and its fade-in.
