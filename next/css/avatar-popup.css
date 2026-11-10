@@ -1,27 +1,30 @@
 /*
- * One-time avatar: head pops up from the bottom edge, then speech bubbles appear.
- * Bottom-right, away from the Desk | Report switch (top-right).
+ * One-time avatar: head pops in, then speech bubbles appear.
+ * Bottom-right, a little above the window edge, away from the Desk | Report switch (top-right).
  * Steps are driven by the class set in js/avatar-popup.js: .is-up (head).
  */
 .avatar-popup {
-  position: fixed; right: var(--space-3); bottom: 0; z-index: 60;
+  position: fixed; right: var(--space-3); bottom: var(--space-3); z-index: 60;
   display: flex; align-items: flex-end; gap: var(--space-2);
   max-width: calc(100vw - 2 * var(--space-3));
   font: 13px/1.4 var(--font-body); color: #111;
   pointer-events: none; /* only the bubbles and buttons take clicks, so the page behind stays usable */
 }
 
-/* Figure: clipped at the bottom edge of the window so it looks like it is peeking up. */
-.avatar-popup__figure { position: relative; flex: none; width: 80px; height: 112px; overflow: hidden; }
+/* Figure. The head's bottom edge is ragged (it is cut from a larger drawing), so it fades out instead of ending in a line. */
+.avatar-popup__figure { position: relative; flex: none; width: 80px; height: 112px; }
 
 /* Head: the source image is trimmed to the drawing (375 x 556), so it fills the frame with no crop offsets.
    If the image is replaced, set the aspect ratio to the new size and the width to taste. */
 .avatar-popup__head {
   position: absolute; left: 4px; bottom: 0; width: 72px; aspect-ratio: 375 / 556; overflow: hidden;
-  transform: translateY(105%); transition: transform .5s cubic-bezier(.2, 1.4, .4, 1);
+  transform: scale(.4); transform-origin: 50% 100%; opacity: 0;
+  transition: transform .5s cubic-bezier(.2, 1.4, .4, 1), opacity .25s ease-out;
+  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
 }
 .avatar-popup__head img { display: block; width: 100%; height: auto; }
-.avatar-popup.is-up .avatar-popup__head { transform: none; }
+.avatar-popup.is-up .avatar-popup__head { transform: none; opacity: 1; }
 
 /* Speech bubbles */
 .avatar-popup__talk {
